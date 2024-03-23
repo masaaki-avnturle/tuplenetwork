@@ -1,7 +1,15 @@
-This pdf directory content with main,pdf altmisypdf, exceedpdf from main rout,
+</head>
+<h2>This pdf directory content with main,pdf altmisypdf, exceedpdf from main rout</h2>
+</head>
 
-these pdf are explained with zeta function of global manifold, with global deprivate and integral manifold.
+<body>
+<p>These pdf are explained with zeta function of global manifold, with global deprivate and integral manifold.</p>
 
-These pdf more also explained with mistry transport machine, quantum computer mechanism, Jones manifold of secret data,
+<p>These pdf more also explained with mistry transport machine,</p>
 
-UFO machine, semiconducter, etc, and these pdf also have with gamma function of global partial deprivation and integral equation.
+<p>quantum computer mechanism, Jones manifold of secret data,</p>
+
+<p>UFO machine, semiconducter, etc, and these pdf also have with gamma function of</p>
+<p>global partial deprivation and integral equation.</p>
+</body>
+
