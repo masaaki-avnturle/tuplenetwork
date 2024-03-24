@@ -4,7 +4,9 @@
 
 <body>
 <p>These pdf are explained with zeta function of global manifold, with global deprivate and integral manifold.</p>
-
+  
+<p>These pdf more also explain with mistry transport machine</p>
+  
 <p>Quantum computer mechanism, Jones manifold of secret data,</p>
 
 <p>UFO machine, semiconducter, etc, and these pdf also have with gamma function of</p>
