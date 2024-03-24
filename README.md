@@ -4,6 +4,7 @@
 
 <body>
 <p>These pdf are explained with zeta function of global manifold, with global deprivate and integral manifold.</p>
+<p>These pdf explain with being built of mistrious transport machine.</p>
     
 <p>Quantum computer mechanism, Jones manifold of secret data,</p>
 
