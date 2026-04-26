@@ -4,46 +4,805 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Masaaki Yamaguchi — Global Differential Manifold Research</title>
+<meta name="description" content="大域的微分多様体・Jones多項式・Shannon Entropy統一理論。独立研究者・開発者 山口雅彰のポートフォリオ。">
+<link rel="canonical" href="https://MasaakiYamaguchi.github.io/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Shippori+Mincho+B1:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --void:#04060a;--deep:#080c12;--surface:#0d1520;--panel:#111a28;
-  --border:rgba(80,120,200,.18);--border2:rgba(80,120,200,.35);
-  --gold:#c8a44a;--blue:#4a80d0;--blue2:#6aa0f0;--teal:#40b8c0;
-  --text:#d8e4f8;--text2:#8898b8;--text3:#445568;
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --void:    #04060a;
+  --deep:    #080c12;
+  --surface: #0d1520;
+  --panel:   #111a28;
+  --border:  rgba(80,120,200,.18);
+  --border2: rgba(80,120,200,.35);
+  --gold:    #c8a44a;
+  --gold2:   #e8c060;
+  --blue:    #4a80d0;
+  --blue2:   #6aa0f0;
+  --teal:    #40b8c0;
+  --purple:  #9060d0;
+  --red:     #c04040;
+  --text:    #d8e4f8;
+  --text2:   #8898b8;
+  --text3:   #445568;
+  --glow-b:  rgba(74,128,208,.25);
+  --glow-g:  rgba(200,164,74,.2);
 }
+
+/* ═══════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--void);color:var(--text);font-family:'EB Garamond',serif;line-height:1.7}
-nav{position:fixed;top:0;left:0;right:0;background:rgba(4,6,10,.85);backdrop-filter:blur(8px);height:56px;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--border);z-index:100}
-.nav-logo{font-family:'JetBrains Mono',monospace;color:var(--gold);font-weight:700;letter-spacing:1px;text-decoration:none;margin-right:auto}
-.nav-links{display:flex;gap:8px}
-.nav-link{font-family:'JetBrains Mono',monospace;color:var(--text2);text-decoration:none;padding:6px 10px;border-radius:4px;font-size:12px}
-.container{max-width:1100px;margin:0 auto;padding:120px 24px 60px}
-.hero{display:flex;gap:40px;align-items:flex-start}
-.hero-left{flex:1}
-.hero-name{font-size:40px;line-height:1.05;margin-bottom:8px}
-.hero-name-ja{font-family:'Shippori Mincho B1',serif;color:var(--gold);display:block;margin-bottom:16px}
-.hero-desc{color:var(--text2);max-width:640px;margin-bottom:20px}
-.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-.hero-tag{font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 10px;border-radius:4px;border:1px solid rgba(255,255,255,.04)}
-.hero-btns{display:flex;gap:12px}
-.btn-primary{background:var(--blue);color:#fff;padding:10px 18px;border-radius:4px;text-decoration:none;font-family:'JetBrains Mono',monospace}
-.panel{background:var(--panel);border:1px solid var(--border);padding:18px;border-radius:8px;color:var(--text2)}
-.section{margin-top:40px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:16px}
-.card{background:var(--panel);border:1px solid var(--border);padding:18px;border-radius:8px}
-.eq{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,.02);padding:8px;border-radius:4px;color:var(--blue2)}
-.stats{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
-.stat{background:rgba(255,255,255,.02);padding:12px;border-radius:6px;min-width:120px;text-align:center}
-.footer{padding:40px 24px;color:var(--text2);text-align:center;border-top:1px solid var(--border);margin-top:40px}
-@media(max-width:900px){.hero{flex-direction:column}}
+body{
+  background:var(--void);
+  color:var(--text);
+  font-family:'EB Garamond',serif;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:rgba(74,128,208,.4);border-radius:3px}
+
+/* ═══════════════════════════════════════════
+   ANIMATED CANVAS BACKGROUND
+═══════════════════════════════════════════ */
+#bg-canvas{
+  position:fixed;inset:0;
+  z-index:0;pointer-events:none;
+  opacity:.55;
+}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  background:rgba(4,6,10,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;
+  height:56px;
+  display:flex;align-items:center;gap:0;
+}
+.nav-logo{
+  font-family:'JetBrains Mono',monospace;
+  font-size:13px;font-weight:700;
+  color:var(--gold);
+  letter-spacing:1px;
+  margin-right:auto;
+  text-decoration:none;
+}
+.nav-logo span{color:var(--blue2);font-weight:300}
+.nav-links{display:flex;gap:2px}
+.nav-link{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--text2);
+  text-decoration:none;
+  padding:6px 14px;
+  border-radius:3px;
+  transition:all .2s;
+}
+.nav-link:hover{color:var(--gold);background:rgba(200,164,74,.08)}
+.nav-gh{
+  display:flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:1px;
+  color:var(--blue2);
+  text-decoration:none;
+  padding:6px 14px;
+  border:1px solid var(--border2);
+  border-radius:4px;
+  margin-left:16px;
+  transition:all .2s;
+}
+.nav-gh:hover{background:rgba(74,128,208,.12);border-color:var(--blue);color:#fff}
+
+/* ═══════════════════════════════════════════
+   SECTIONS COMMON
+═══════════════════════════════════════════ */
+section{
+  position:relative;z-index:1;
+  padding:100px 0 80px;
+}
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 40px;
+}
+.sec-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--blue);
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.sec-label::before{
+  content:'';display:block;
+  width:32px;height:1px;
+  background:var(--blue);
+}
+.sec-title{
+  font-family:'EB Garamond',serif;
+  font-size:clamp(28px,4vw,44px);
+  font-weight:600;
+  color:var(--text);
+  line-height:1.2;
+  margin-bottom:12px;
+}
+.sec-title em{
+  font-style:italic;
+  color:var(--gold);
+}
+.sec-sub{
+  font-size:17px;
+  color:var(--text2);
+  max-width:600px;
+  line-height:1.7;
+  margin-bottom:48px;
+}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:0;
+  overflow:hidden;
+}
+.hero-inner{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 40px;
+}
+
+/* Left: Text */
+.hero-eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--teal);
+  margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;
+  opacity:0;animation:fadeUp .8s .2s forwards;
+}
+.hero-eyebrow::before{
+  content:'';display:inline-block;
+  width:24px;height:1px;background:var(--teal);
+}
+.hero-name{
+  font-family:'EB Garamond',serif;
+  font-size:clamp(40px,5vw,70px);
+  font-weight:700;line-height:1.05;
+  margin-bottom:8px;
+  opacity:0;animation:fadeUp .8s .35s forwards;
+}
+.hero-name-ja{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(18px,2.5vw,28px);
+  font-weight:400;
+  color:var(--gold);
+  letter-spacing:6px;
+  margin-bottom:24px;
+  display:block;
+  opacity:0;animation:fadeUp .8s .45s forwards;
+}
+.hero-desc{
+  font-size:18px;
+  color:var(--text2);
+  line-height:1.8;
+  max-width:480px;
+  margin-bottom:36px;
+  opacity:0;animation:fadeUp .8s .55s forwards;
+}
+.hero-tags{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-bottom:36px;
+  opacity:0;animation:fadeUp .8s .65s forwards;
+}
+.hero-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  padding:4px 12px;
+  border:1px solid;
+  border-radius:2px;
+  text-transform:uppercase;
+}
+.tag-blue{color:var(--blue2);border-color:rgba(74,128,208,.4);background:rgba(74,128,208,.06)}
+.tag-gold{color:var(--gold);border-color:rgba(200,164,74,.4);background:rgba(200,164,74,.06)}
+.tag-teal{color:var(--teal);border-color:rgba(64,184,192,.4);background:rgba(64,184,192,.06)}
+.tag-purple{color:var(--purple);border-color:rgba(144,96,208,.4);background:rgba(144,96,208,.06)}
+
+.hero-btns{
+  display:flex;gap:12px;
+  opacity:0;animation:fadeUp .8s .75s forwards;
+}
+.btn-primary{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:12px 28px;
+  background:var(--blue);color:#fff;
+  border:1px solid var(--blue);
+  border-radius:3px;
+  transition:all .2s;
+  cursor:pointer;
+}
+.btn-primary:hover{background:var(--blue2);border-color:var(--blue2);box-shadow:0 0 24px var(--glow-b)}
+.btn-outline{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  text-decoration:none;
+  padding:12px 28px;
+  background:transparent;color:var(--gold);
+  border:1px solid rgba(200,164,74,.5);
+  border-radius:3px;
+  transition:all .2s;
+  cursor:pointer;
+}
+.btn-outline:hover{background:rgba(200,164,74,.1);border-color:var(--gold);box-shadow:0 0 20px var(--glow-g)}
+
+/* Right: Equation Display */
+.hero-eq-panel{
+  background:rgba(13,21,32,.7);
+  border:1px solid var(--border2);
+  border-radius:8px;
+  padding:32px;
+  backdrop-filter:blur(10px);
+  position:relative;
+  overflow:hidden;
+  opacity:0;animation:fadeLeft .9s .4s forwards;
+}
+.hero-eq-panel::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--blue),var(--teal),transparent);
+}
+.eq-panel-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--text3);
+  margin-bottom:20px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+}
+.eq-line{
+  font-family:'EB Garamond',serif;
+  font-size:16px;
+  color:rgba(216,228,248,.85);
+  margin-bottom:14px;
+  padding:10px 14px;
+  background:rgba(255,255,255,.03);
+  border-left:2px solid transparent;
+  border-radius:2px;
+  transition:all .3s;
+  cursor:default;
+  line-height:1.5;
+}
+.eq-line:hover{
+  background:rgba(74,128,208,.08);
+  border-left-color:var(--blue);
+  color:#fff;
+}
+.eq-line.gold{border-left-color:var(--gold);background:rgba(200,164,74,.05)}
+.eq-line.teal{border-left-color:var(--teal);background:rgba(64,184,192,.05)}
+.eq-line.purple{border-left-color:var(--purple);background:rgba(144,96,208,.05)}
+
+/* ═══════════════════════════════════════════
+   ABOUT / FRAMEWORK
+═══════════════════════════════════════════ */
+#about{background:linear-gradient(180deg,var(--void) 0%,var(--deep) 100%)}
+
+.framework-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.fw-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:28px 24px;
+  position:relative;
+  overflow:hidden;
+  transition:all .3s;
+}
+.fw-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity .3s;
+  border-radius:6px;
+}
+.fw-card:hover{transform:translateY(-4px);border-color:var(--border2)}
+.fw-card:hover::after{opacity:1}
+.fw-card.c-blue::after{box-shadow:inset 0 0 40px rgba(74,128,208,.08)}
+.fw-card.c-gold::after{box-shadow:inset 0 0 40px rgba(200,164,74,.08)}
+.fw-card.c-teal::after{box-shadow:inset 0 0 40px rgba(64,184,192,.08)}
+.fw-card.c-purple::after{box-shadow:inset 0 0 40px rgba(144,96,208,.08)}
+.fw-card.c-red::after{box-shadow:inset 0 0 40px rgba(192,64,64,.08)}
+
+.fw-icon{
+  font-size:28px;margin-bottom:14px;display:block;
+}
+.fw-title{
+  font-family:'EB Garamond',serif;
+  font-size:20px;font-weight:600;
+  color:var(--text);
+  margin-bottom:8px;
+}
+.fw-eq{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--text3);
+  margin-bottom:12px;
+  line-height:1.6;
+  word-break:break-all;
+}
+.fw-desc{
+  font-size:15px;
+  color:var(--text2);
+  line-height:1.65;
+}
+
+/* ═══════════════════════════════════════════
+   PAPERS / FILES
+═══════════════════════════════════════════ */
+#papers{background:var(--deep)}
+
+.papers-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+.paper-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:24px 28px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:20px;
+  align-items:start;
+  transition:all .25s;
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+.paper-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;bottom:0;width:3px;
+  background:var(--accent-color,var(--blue));
+  transform:scaleY(0);
+  transform-origin:bottom;
+  transition:transform .3s;
+}
+.paper-card:hover{
+  border-color:var(--border2);
+  transform:translateX(3px);
+  background:rgba(13,21,40,.9);
+}
+.paper-card:hover::before{transform:scaleY(1)}
+.paper-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--text3);
+  padding-top:3px;
+  min-width:28px;
+}
+.paper-body{}
+.paper-title{
+  font-family:'EB Garamond',serif;
+  font-size:18px;font-weight:600;
+  color:var(--text);
+  margin-bottom:4px;
+  line-height:1.3;
+}
+.paper-title-ja{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:13px;
+  color:var(--gold);
+  margin-bottom:8px;
+  display:block;
+}
+.paper-desc{
+  font-size:14px;
+  color:var(--text2);
+  line-height:1.6;
+  margin-bottom:10px;
+}
+.paper-tags{display:flex;flex-wrap:wrap;gap:5px}
+.paper-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:1px;
+  padding:2px 8px;
+  border:1px solid;
+  border-radius:2px;
+  text-transform:uppercase;
+}
+.paper-arrow{
+  color:var(--text3);
+  font-size:18px;
+  padding-top:2px;
+  transition:all .2s;
+}
+.paper-card:hover .paper-arrow{color:var(--blue2);transform:translate(3px,-1px)}
+
+/* ═══════════════════════════════════════════
+   PROJECTS / TOOLS
+═══════════════════════════════════════════ */
+#projects{background:linear-gradient(180deg,var(--deep) 0%,var(--void) 100%)}
+
+.projects-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.proj-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:28px 24px;
+  position:relative;
+  overflow:hidden;
+  transition:all .3s;
+  cursor:pointer;
+  text-decoration:none;
+  color:inherit;
+  display:flex;
+  flex-direction:column;
+}
+.proj-card:hover{
+  border-color:var(--border2);
+  transform:translateY(-5px);
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.proj-top{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;
+  margin-bottom:16px;
+}
+.proj-icon{
+  width:44px;height:44px;
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+}
+.proj-lang{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  padding:3px 8px;
+  border:1px solid var(--border);
+  border-radius:2px;
+  color:var(--text2);
+}
+.proj-title{
+  font-family:'EB Garamond',serif;
+  font-size:20px;font-weight:600;
+  color:var(--text);
+  margin-bottom:6px;
+}
+.proj-sub{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--text3);
+  margin-bottom:10px;letter-spacing:1px;
+}
+.proj-desc{
+  font-size:14px;color:var(--text2);
+  line-height:1.65;flex:1;
+  margin-bottom:16px;
+}
+.proj-footer{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  margin-top:auto;
+}
+.proj-stats{
+  display:flex;gap:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--text3);
+}
+.proj-stat{display:flex;align-items:center;gap:4px}
+.proj-link{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1px;
+  color:var(--blue2);
+  text-decoration:none;
+  text-transform:uppercase;
+  transition:color .2s;
+}
+.proj-link:hover{color:#fff}
+
+/* ═══════════════════════════════════════════
+   EQUATION SHOWCASE
+═══════════════════════════════════════════ */
+#equations{
+  background:var(--void);
+  padding:80px 0;
+}
+.eq-showcase{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+.eq-show-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:24px;
+  transition:all .25s;
+}
+.eq-show-card:hover{
+  border-color:var(--border2);
+  background:rgba(13,21,40,.95);
+}
+.eq-source{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:2px;
+  color:var(--text3);
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.eq-name{
+  font-family:'EB Garamond',serif;
+  font-size:17px;font-weight:500;
+  color:var(--text2);
+  margin-bottom:12px;
+}
+.eq-math{
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  color:var(--blue2);
+  background:rgba(74,128,208,.06);
+  border:1px solid rgba(74,128,208,.12);
+  border-radius:4px;
+  padding:10px 14px;
+  line-height:1.7;
+  word-break:break-all;
+}
+.eq-math.gold-math{
+  color:var(--gold);
+  background:rgba(200,164,74,.06);
+  border-color:rgba(200,164,74,.12);
+}
+.eq-math.teal-math{
+  color:var(--teal);
+  background:rgba(64,184,192,.06);
+  border-color:rgba(64,184,192,.12);
+}
+
+/* ═══════════════════════════════════════════
+   STATS BAR
+═══════════════════════════════════════════ */
+.stats-bar{
+  background:var(--panel);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:32px 0;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+}
+.stat-item{
+  text-align:center;
+  padding:0 20px;
+  border-right:1px solid var(--border);
+}
+.stat-item:last-child{border-right:none}
+.stat-num{
+  font-family:'EB Garamond',serif;
+  font-size:42px;font-weight:700;
+  color:var(--gold);
+  display:block;
+  line-height:1;
+  margin-bottom:6px;
+}
+.stat-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--text2);
+}
+
+/* ═══════════════════════════════════════════
+   TIMELINE
+═══════════════════════════════════════════ */
+#timeline{background:var(--deep);padding:80px 0}
+.tl-wrap{
+  position:relative;
+  max-width:700px;
+  margin:0 auto;
+  padding-left:40px;
+}
+.tl-wrap::before{
+  content:'';
+  position:absolute;
+  left:12px;top:0;bottom:0;
+  width:1px;
+  background:linear-gradient(180deg,transparent,var(--blue),var(--teal),transparent);
+}
+.tl-item{
+  position:relative;
+  margin-bottom:36px;
+  opacity:0;
+  transform:translateX(20px);
+  transition:all .5s;
+}
+.tl-item.visible{opacity:1;transform:translateX(0)}
+.tl-dot{
+  position:absolute;
+  left:-34px;top:4px;
+  width:10px;height:10px;
+  border-radius:50%;
+  border:2px solid;
+  background:var(--deep);
+}
+.tl-year{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  color:var(--text3);
+  text-transform:uppercase;
+  margin-bottom:4px;
+}
+.tl-title{
+  font-family:'EB Garamond',serif;
+  font-size:19px;font-weight:600;
+  color:var(--text);
+  margin-bottom:6px;
+}
+.tl-desc{
+  font-size:15px;color:var(--text2);
+  line-height:1.65;
+}
+
+/* ═══════════════════════════════════════════
+   CONTACT / FOOTER
+═══════════════════════════════════════════ */
+#contact{background:var(--void);padding:80px 0 40px}
+.contact-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:start;
+  padding-bottom:60px;
+  border-bottom:1px solid var(--border);
+}
+.contact-links{display:flex;flex-direction:column;gap:12px}
+.contact-link{
+  display:flex;align-items:center;gap:16px;
+  padding:14px 18px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:5px;
+  text-decoration:none;
+  color:var(--text);
+  transition:all .2s;
+  font-size:15px;
+}
+.contact-link:hover{
+  border-color:var(--border2);
+  background:rgba(13,21,40,.9);
+  transform:translateX(4px);
+}
+.contact-link-icon{
+  width:36px;height:36px;
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.contact-link-text{flex:1}
+.contact-link-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--text3);
+  margin-bottom:2px;
+}
+.contact-link-val{color:var(--text);font-size:14px}
+
+.footer-note{
+  padding-top:40px;
+  text-align:center;
+}
+.footer-eq{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  color:var(--text3);
+  margin-bottom:12px;
+  line-height:2;
+}
+.footer-copy{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:2px;
+  color:var(--text3);
+  text-transform:uppercase;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeLeft{
+  from{opacity:0;transform:translateX(40px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+@keyframes pulse-ring{
+  0%{box-shadow:0 0 0 0 rgba(74,128,208,.4)}
+  70%{box-shadow:0 0 0 12px transparent}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+
+/* Scroll reveal */
+.reveal{
+  opacity:0;transform:translateY(30px);
+  transition:opacity .7s, transform .7s;
+}
+.reveal.visible{opacity:1;transform:none}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-eq-panel{display:none}
+  .framework-grid{grid-template-columns:repeat(2,1fr)}
+  .papers-grid{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:repeat(2,1fr)}
+  .eq-showcase{grid-template-columns:1fr}
+  .stats-bar{grid-template-columns:repeat(3,1fr)}
+  .contact-inner{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  nav{padding:0 16px}
+  .nav-links{display:none}
+  .container{padding:0 20px}
+  .framework-grid,.projects-grid{grid-template-columns:1fr}
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
+
+<!-- ══════════════════ CANVAS BG ══════════════════ -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ══════════════════ NAV ══════════════════ -->
 <nav>
-  <a class="nav-logo" href="#top">MY/GDM</a>
+  <a class="nav-logo" href="#hero">MY<span>/</span>GDM</a>
   <div class="nav-links">
     <a class="nav-link" href="#about">理論</a>
     <a class="nav-link" href="#papers">論文</a>
@@ -51,112 +810,1035 @@ nav{position:fixed;top:0;left:0;right:0;background:rgba(4,6,10,.85);backdrop-fil
     <a class="nav-link" href="#equations">方程式</a>
     <a class="nav-link" href="#contact">連絡</a>
   </div>
-  <a class="nav-link" href="https://github.com/MasaakiYamaguchi" target="_blank">GitHub</a>
+  <a class="nav-gh" href="https://github.com/MasaakiYamaguchi" target="_blank">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+    </svg>
+    GitHub
+  </a>
 </nav>
 
-<div class="container" id="top">
-  <section class="hero">
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="hero">
+  <div class="hero-inner">
+    <!-- Left -->
     <div class="hero-left">
-      <h1 class="hero-name">Masaaki Yamaguchi<br><small style="font-size:14px">山口 雅彰</small></h1>
-      <div class="hero-name-ja">Global Differential Manifold Research</div>
+      <div class="hero-eyebrow">Global Differential Manifold Research</div>
+      <h1 class="hero-name">Masaaki<br>Yamaguchi</h1>
+      <span class="hero-name-ja">山口 雅彰</span>
       <p class="hero-desc">
         大域的微分多様体とジョーンズ多項式の統一理論を研究し、
-        ガンマ・ベータ・ゼータ・シャノンエントロピーの同型性を
-        プログラミング言語とAI設計へ応用する独立研究者・開発者。
+        ガンマ函数・ベータ函数・ゼータ函数・シャノンエントロピーの
+        相互等価性をプログラミング言語とAI設計へ応用する
+        独立研究者・開発者。
       </p>
       <div class="hero-tags">
-        <span class="hero-tag">Jones Polynomial</span>
-        <span class="hero-tag">Gamma · Beta · Zeta</span>
-        <span class="hero-tag">Shannon Entropy</span>
-        <span class="hero-tag">Bada Language</span>
+        <span class="hero-tag tag-blue">Jones Polynomial</span>
+        <span class="hero-tag tag-gold">Gamma · Beta · Zeta</span>
+        <span class="hero-tag tag-teal">Shannon Entropy</span>
+        <span class="hero-tag tag-purple">Bada Language</span>
+        <span class="hero-tag tag-blue">TupleSpace AI</span>
+        <span class="hero-tag tag-gold">Akashic Record</span>
+        <span class="hero-tag tag-teal">AdS5 Manifold</span>
+        <span class="hero-tag tag-purple">Calabi–Yau</span>
       </div>
       <div class="hero-btns">
         <a class="btn-primary" href="#papers">論文を読む</a>
-        <a class="btn-primary" href="#projects">プロジェクト</a>
+        <a class="btn-outline" href="#projects">プロジェクト</a>
       </div>
     </div>
-    <div style="width:360px">
-      <div class="panel">
-        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3);margin-bottom:8px">Core Equations</div>
-        <div class="eq">β(p,q) = Γ(p)Γ(q) / Γ(p+q)</div>
-        <div class="eq" style="margin-top:8px">ζ(s) = β(p,q) / log x ≈ x log x</div>
-        <div class="eq" style="margin-top:8px">π(χ,x) = [iπ(χ,x), f(x)]</div>
-        <div class="eq" style="margin-top:8px">⊕(iℏ∇)^⊕L = ∫ e^{-x} x^{1-t} dx_m ≈ e^{-x log x}</div>
-      </div>
+    <!-- Right: Equations Panel -->
+    <div class="hero-eq-panel">
+      <div class="eq-panel-label">// core equations — yamaguchi framework</div>
+      <div class="eq-line gold">β(p,q) = Γ(p)Γ(q) / Γ(p+q) = 2∫|sin2x|²dτ</div>
+      <div class="eq-line">d/df F = ∬ 1/(x log x)² dx_m + ∬ 1/(y log y)^½ dy_m</div>
+      <div class="eq-line teal">ζ(s) = β(p,q) / log x = x log x</div>
+      <div class="eq-line">⊕(iℏ∇)^⊕L = ∫e⁻ˣx^{1-t}dx_m = e^{-x log x}</div>
+      <div class="eq-line purple">π(χ,x) = [iπ(χ,x), f(x)]</div>
+      <div class="eq-line gold">‖ds²‖ = e^{-2πT|ψ|}[η_μν + h̄(x)]dx^μdx^ν + T²d²ψ</div>
+      <div class="eq-line teal">x^{½+iy} = e^{x log x} — ζ(s) connection</div>
+      <div class="eq-line">d/dt g_{ij}(t) = −2R_{ij} — Ricci flow</div>
     </div>
-  </section>
-
-  <section id="about" class="section">
-    <h2>概要 — Yamaguchi Framework</h2>
-    <p class="panel" style="margin-top:12px">
-      大域的微分多様体を核として、ガンマ函数・ベータ函数・ゼータ函数を統一する理論。
-      非可換作用素・量子化作用素・TupleSpace（アカシックレコード）を組み合わせ、
-      理論と実装（Bada 言語・BadaOS・omega_llm）を通じて検証します。
-    </p>
-  </section>
-
-  <section id="papers" class="section">
-    <h2>研究ファイル（抜粋）</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Beta Function Reveal with Global Differential Manifold</h3>
-        <p>ベータ函数と大域的微分多様体の解明。Γ・β・ζ の関係を多様体積分から導出。</p>
-      </div>
-      <div class="card">
-        <h3>DNA of Universe and Human Being Entrance with Zeta Function</h3>
-        <p>ゼータ函数とシャノンエントロピーの同型、宇宙・人体のDNA的解釈。</p>
-      </div>
-      <div class="card">
-        <h3>Artificial Intelligence and TupleSpace of Ultranetwork</h3>
-        <p>TupleSpace を用いた永続知識基盤と Bada 言語の設計。</p>
-      </div>
-      <div class="card">
-        <h3>Library of Akashic Record</h3>
-        <p>多様体理論・コホモロジー・D-ブレーン等を網羅する研究集。</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects" class="section">
-    <h2>主要プロジェクト</h2>
-    <div class="grid">
-      <div class="card"><strong>Bada Language</strong><p>独自作用素環プログラミング言語（C 実装）。</p></div>
-      <div class="card"><strong>BadaOS</strong><p>Ubuntu 互換 OS シミュレータ。</p></div>
-      <div class="card"><strong>omega_llm</strong><p>C ベースの LLM エンジン（π-softmax 等）。</p></div>
-      <div class="card"><strong>Jones-NN LLM Apps</strong><p>ジョーンズ多項式を応用した LLM アプリ。</p></div>
-    </div>
-  </section>
-
-  <section id="equations" class="section">
-    <h2>方程式ショーケース</h2>
-    <div class="grid">
-      <div class="card"><div class="eq">d/df F = ∬ 1/(x log x)^2 dx_m + ∬ 1/(y log y)^{1/2} dy_m = Γ(x,y)</div></div>
-      <div class="card"><div class="eq">ζ(s) = β(p,q) / log x = x log x</div></div>
-      <div class="card"><div class="eq">π(χ,x) = [iπ(χ,x), f(x)]</div></div>
-      <div class="card"><div class="eq">⊕(iℏ∇)^⊕L = e^{-x log x}</div></div>
-    </div>
-  </section>
-
-  <section id="contact" class="section">
-    <h2>連絡</h2>
-    <div class="grid">
-      <div class="card"><strong>GitHub</strong><p><a href="https://github.com/MasaakiYamaguchi" target="_blank">github.com/MasaakiYamaguchi</a></p></div>
-      <div class="card"><strong>Research Papers</strong><p>16 論文・PDF 形式で公開（リポジトリ内）</p></div>
-      <div class="card"><strong>Projects</strong><p>Bada / BadaOS / omega_llm / Jones-NN</p></div>
-      <div class="card"><strong>Equation Archive</strong><p>54+ 方程式（TeX 形式利用可）</p></div>
-    </div>
-  </section>
-
-  <div class="stats" aria-hidden="true" style="margin-top:28px;">
-    <div class="stat"><div style="font-size:20px;color:var(--gold)">16</div><div style="font-size:12px">Research Files</div></div>
-    <div class="stat"><div style="font-size:20px;color:var(--gold)">54</div><div style="font-size:12px">Core Equations</div></div>
-    <div class="stat"><div style="font-size:20px;color:var(--gold)">8</div><div style="font-size:12px">Software Projects</div></div>
   </div>
+</section>
 
-  <div class="footer">
-    © 2025 Masaaki Yamaguchi · 山口 雅彰 · Global Differential Manifold Research
+<!-- ══════════════════ STATS ══════════════════ -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">16</span>
+    <span class="stat-label">Research Files</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">54</span>
+    <span class="stat-label">Core Equations</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">8</span>
+    <span class="stat-label">Software Projects</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">∞</span>
+    <span class="stat-label">Akashic Records</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">1</span>
+    <span class="stat-label">Unified Theory</span>
   </div>
 </div>
 
+<!-- ══════════════════ ABOUT / FRAMEWORK ══════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="sec-label">理論体系</div>
+    <h2 class="sec-title">山口フレームワーク<br><em>Yamaguchi Framework</em></h2>
+    <p class="sec-sub">
+      大域的微分多様体を核として、数学・物理学・情報科学・人工知能を
+      単一の方程式系で統一する独自理論。ジョーンズ多項式・サーストン分類・
+      ペレルマン多様体を出発点に、LLMアーキテクチャとの同型性を導く。
+    </p>
+    <div class="framework-grid reveal">
+      <div class="fw-card c-blue">
+        <span class="fw-icon">∇</span>
+        <div class="fw-title">大域的微分多様体</div>
+        <div class="fw-eq">d/df F = ∬1/(x log x)² dx_m<br>+ ∬1/(y log y)^½ dy_m</div>
+        <div class="fw-desc">
+          全方程式の根幹をなす大域的微分作用素。ガンマ函数・ベータ函数・ゼータ函数を
+          単一の多様体積分へ統一し、宇宙の構造方程式を与える。
+        </div>
+      </div>
+      <div class="fw-card c-gold">
+        <span class="fw-icon">β</span>
+        <div class="fw-title">ガンマ・ベータ函数系</div>
+        <div class="fw-eq">β(p,q) = Γ(p)Γ(q)/Γ(p+q)<br>ζ(s) = β(p,q)/log x</div>
+        <div class="fw-desc">
+          ベータ函数・ガンマ函数・ゼータ函数の三位一体。
+          シャノンエントロピー x log x を核として全てが等価であることを証明。
+          宇宙と人体のDNAとして解釈される。
+        </div>
+      </div>
+      <div class="fw-card c-teal">
+        <span class="fw-icon">π</span>
+        <div class="fw-title">非可換作用素 π(χ,x)</div>
+        <div class="fw-eq">π(χ,x) = [iπ(χ,x), f(x)]<br>iπ∘f ≠ f∘π</div>
+        <div class="fw-desc">
+          シャノンエントロピーとコルモゴロフエントロピーの非可換性を表す核心作用素。
+          量子力学のハイゼンベルク交換子と同型で、重力・反重力方程式を生成する。
+        </div>
+      </div>
+      <div class="fw-card c-purple">
+        <span class="fw-icon">⊕</span>
+        <div class="fw-title">量子作用素 ⊕(iℏ∇)^⊕L</div>
+        <div class="fw-eq">HΨ = ⊕(iℏ∇)^⊕L = e^{-x log x}<br>= ∫e⁻ˣx^{1-t}dx_m</div>
+        <div class="fw-desc">
+          ハミルトニアンHΨをガンマ函数積分と同型と見なす核心式。
+          量子力学・重力場・微分幾何の量子化を一本の式で表し、
+          LLM注意機構のℏ_eff スケーリングの根拠となる。
+        </div>
+      </div>
+      <div class="fw-card c-blue">
+        <span class="fw-icon">Ω</span>
+        <div class="fw-title">TupleSpace · アカシックレコード</div>
+        <div class="fw-eq">Ω::DATABASE[tuplespace]<br>⊃ Z ⊃ C ⊕ ∇R⁺</div>
+        <div class="fw-desc">
+          多様体をデータベース化した不変知識空間。書き換え不能な辞書として
+          アカシックレコードを実装し、認知システムの永続的基盤とする。
+          Bada言語・BadaOSの理論的基礎。
+        </div>
+      </div>
+      <div class="fw-card c-gold">
+        <span class="fw-icon">𝒥</span>
+        <div class="fw-title">ジョーンズ多様体・結び目理論</div>
+        <div class="fw-eq">‖ds²‖ = ‖x^½ log x‖⁴ = ζ(s)<br>ζ=(at-tⁿ+a)=eᶠ</div>
+        <div class="fw-desc">
+          ジョーンズ多項式をGoFデザインパターンクラスの結び目と同型と見なす。
+          サーストン8幾何・ペレルマン多様体を経て、
+          LLMアーキテクチャの位相的構造を導出する。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ PAPERS ══════════════════ -->
+<section id="papers">
+  <div class="container">
+    <div class="sec-label">研究レポート</div>
+    <h2 class="sec-title">論文・<em>Research Files</em></h2>
+    <p class="sec-sub">GitHubリポジトリに収録されている全研究ファイル。
+    大域的微分多様体理論から有機化学・医薬学まで幅広い分野を扱う。</p>
+    <div class="papers-grid reveal">
+
+      <div class="paper-card" style="--accent-color:var(--gold)">
+        <div class="paper-num">01</div>
+        <div class="paper-body">
+          <div class="paper-title">Beta Function Reveal with Global Differential Manifold</div>
+          <span class="paper-title-ja">ベータ函数と大域的微分多様体の解明</span>
+          <div class="paper-desc">
+            ガンマ函数・ベータ函数・ゼータ函数の相互等価性を大域的微分多様体から導く。
+            超円関数・ジョーンズ多様体・ヒッグス場との接続を示す核心論文。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-gold">β函数</span>
+            <span class="paper-tag tag-blue">Γ函数</span>
+            <span class="paper-tag tag-teal">ジョーンズ多様体</span>
+            <span class="paper-tag tag-purple">量子力学</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--teal)">
+        <div class="paper-num">02</div>
+        <div class="paper-body">
+          <div class="paper-title">DNA of Universe and Human Being Entrance with Zeta Function</div>
+          <span class="paper-title-ja">宇宙と人体のDNA — ゼータ函数による入口</span>
+          <div class="paper-desc">
+            ゼータ函数がシャノン公式であることを証明し、
+            一般相対性理論の多様体積分が宇宙のDNA、ゼータ函数が人体のDNAであることを示す。
+            1998年富山大学入試問題との接続も論じる。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-teal">ζ函数</span>
+            <span class="paper-tag tag-gold">シャノン公式</span>
+            <span class="paper-tag tag-blue">一般相対性理論</span>
+            <span class="paper-tag tag-purple">ペレルマン多様体</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--blue)">
+        <div class="paper-num">03</div>
+        <div class="paper-body">
+          <div class="paper-title">Euler Product Estrade from Heisenberg Non-commutative with Deprivate Equation</div>
+          <span class="paper-title-ja">ハイゼンベルク非可換方程式からのオイラー積</span>
+          <div class="paper-desc">
+            ネイピア数ステップ関数・ダランベルシアン・反重力方程式を通じて
+            オイラー積が非可換構造から導出されることを示す。
+            π(χ,x)作用素の完全な記述を含む。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-blue">非可換代数</span>
+            <span class="paper-tag tag-teal">ダランベルシアン</span>
+            <span class="paper-tag tag-gold">反重力方程式</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--purple)">
+        <div class="paper-num">04</div>
+        <div class="paper-body">
+          <div class="paper-title">Artificial Intelligence and TupleSpace of Ultranetwork</div>
+          <span class="paper-title-ja">人工知能とウルトラネットワークのタプルスペース</span>
+          <div class="paper-desc">
+            Omega::DATABASEをアカシックレコードとして実装する独自プログラミング言語仕様。
+            作用素環プログラミング・半静性型宣言子・多様体のコード化を詳述。
+            Bada言語の理論的基盤となる包括的技術文書。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-purple">TupleSpace</span>
+            <span class="paper-tag tag-blue">作用素環</span>
+            <span class="paper-tag tag-gold">Bada言語</span>
+            <span class="paper-tag tag-teal">AI設計</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--gold)">
+        <div class="paper-num">05</div>
+        <div class="paper-body">
+          <div class="paper-title">Library of Akashic Record</div>
+          <span class="paper-title-ja">アカシックレコードの図書館</span>
+          <div class="paper-desc">
+            カラビ・ヤウ多様体・D-ブレーン・コホモロジーを含む包括的多様体理論。
+            開積分の基本群的重力・ジョーンズ多様体・ゼータ函数の結び目理論的解釈を展開。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-gold">アカシックレコード</span>
+            <span class="paper-tag tag-blue">D-ブレーン</span>
+            <span class="paper-tag tag-teal">コホモロジー</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--teal)">
+        <div class="paper-num">06</div>
+        <div class="paper-body">
+          <div class="paper-title">M Theory Equal with AdS5 Manifold, Gamma Function Escort into Beta Function</div>
+          <span class="paper-title-ja">M理論とAdS5多様体 — ガンマ→ベータ函数</span>
+          <div class="paper-desc">
+            カラビ・ヤウ多様体のオイラー数がホッジ数を経てガンマ函数となり
+            ジョーンズ多項式・鏡映理論・ホッジ予想の解決へと至ることを示す。
+            AdS5多様体とヒッグス場の統一的記述。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-teal">AdS5</span>
+            <span class="paper-tag tag-gold">カラビ・ヤウ</span>
+            <span class="paper-tag tag-blue">ホッジ予想</span>
+            <span class="paper-tag tag-purple">M理論</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--blue)">
+        <div class="paper-num">07</div>
+        <div class="paper-body">
+          <div class="paper-title">Secureproduct Reloaded from Differential Manifold of Quantum Level</div>
+          <span class="paper-title-ja">量子レベル微分多様体からのSecureproduct再構築</span>
+          <div class="paper-desc">
+            虚数極の回転が1つの行列要素として出現することを示す。
+            ∇⁺演算子・重力場理論・アカシックレコードとしての大域的微分多様体を結合。
+            ヴェイユ予想との接続も論じる。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-blue">Secureproduct</span>
+            <span class="paper-tag tag-teal">虚数極</span>
+            <span class="paper-tag tag-gold">ヴェイユ予想</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--purple)">
+        <div class="paper-num">08</div>
+        <div class="paper-body">
+          <div class="paper-title">Magic Operate with Dalia Function System</div>
+          <span class="paper-title-ja">ダリア函数システムによるMagic演算子</span>
+          <div class="paper-desc">
+            TテンソルとTimebow方程式をベータ函数から導出。
+            D²ψ⊗hνのD-ブレーン解釈・ノルム空間の積分方程式・
+            log(x log x) ≥ 2(y log y)^½ の不等式を含む。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-purple">Magic演算子</span>
+            <span class="paper-tag tag-blue">Timebow方程式</span>
+            <span class="paper-tag tag-teal">D-ブレーン</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--gold)">
+        <div class="paper-num">09</div>
+        <div class="paper-body">
+          <div class="paper-title">M Dimension from Catastrophe Theory Built with M Manifold Stream</div>
+          <span class="paper-title-ja">カタストロフィ理論によるM次元多様体ストリーム</span>
+          <div class="paper-desc">
+            空間的観念論からM次元多様体を構築するカタストロフィ理論。
+            ノルム公式が大域的微分方程式と結び目理論を含むことを示し、
+            宇宙と他次元の関係を記述する。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-gold">カタストロフィ理論</span>
+            <span class="paper-tag tag-blue">M次元</span>
+            <span class="paper-tag tag-teal">結び目理論</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--teal)">
+        <div class="paper-num">10</div>
+        <div class="paper-body">
+          <div class="paper-title">微分幾何の量子化による大域的切断多様体</div>
+          <span class="paper-title-ja">Differential Geometry Quantization &amp; Global Sectional Manifold</span>
+          <div class="paper-desc">
+            コホモロジーの同値類がヘルマンダー作用素であることを示し、
+            N階層指数定理・ブラウン運動・確率論・ヴェイユ予想ゼータ函数を統合。
+            量子力学のガウス曲面論を解明する。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-teal">コホモロジー</span>
+            <span class="paper-tag tag-gold">量子化</span>
+            <span class="paper-tag tag-blue">ヘルマンダー作用素</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--blue)">
+        <div class="paper-num">11</div>
+        <div class="paper-body">
+          <div class="paper-title">Amino Medicine Architect with Non-control from Out of Pressure</div>
+          <span class="paper-title-ja">外圧なしの非制御によるアミノ医薬設計</span>
+          <div class="paper-desc">
+            20種アミノ酸と有機化学反応を数学的フレームワークで記述。
+            セサミン・ドーパミン・脳内グリア細胞・eGFR機能との関連を
+            化学構造式と推算式で展開。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-blue">有機化学</span>
+            <span class="paper-tag tag-gold">アミノ酸</span>
+            <span class="paper-tag tag-teal">医薬設計</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--purple)">
+        <div class="paper-num">12</div>
+        <div class="paper-body">
+          <div class="paper-title">Recycle においての塩化ビニルのナトリウムフェノキシド分解</div>
+          <span class="paper-title-ja">PVC Decomposition via Sodium Phenoxide / Propanoxide</span>
+          <div class="paper-desc">
+            姉・睦世氏の論文について。塩化ビニルをナトリウムフェノキシド・
+            ナトリウムプロパノキシドで分解する化学式。
+            プロパン固体化・降圧剤作用の特許技術を含む。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-purple">リサイクル化学</span>
+            <span class="paper-tag tag-blue">PVC分解</span>
+            <span class="paper-tag tag-gold">特許技術</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--gold)">
+        <div class="paper-num">13</div>
+        <div class="paper-body">
+          <div class="paper-title">Fullnitorazpam is Recreated from Amail</div>
+          <span class="paper-title-ja">フルニトラゼパムのアメルからの再構成</span>
+          <div class="paper-desc">
+            フルニトラゼパム（サイレース）とカリウム・カルシウム差分ベクトルによる
+            磁性体生成。アカシックレコード・ベータ函数大域的積分多様体のベクトル方位と
+            ガウス曲面論を含む医薬研究ノート。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-gold">医薬化学</span>
+            <span class="paper-tag tag-blue">磁性体生成</span>
+            <span class="paper-tag tag-teal">ベクトル方位</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+      <div class="paper-card" style="--accent-color:var(--teal)">
+        <div class="paper-num">14</div>
+        <div class="paper-body">
+          <div class="paper-title">Cafe / Journal / Resume</div>
+          <span class="paper-title-ja">カフェ論文集 · ジャーナル · 履歴書</span>
+          <div class="paper-desc">
+            cafe.pdf・jurnarlist.pdf・rejume.pdf の三文書。
+            研究活動の記録・発表履歴・論文投稿先一覧を含む。
+            山口フレームワーク全体の研究経歴を体系的に記録したドキュメント群。
+          </div>
+          <div class="paper-tags">
+            <span class="paper-tag tag-teal">研究記録</span>
+            <span class="paper-tag tag-blue">履歴書</span>
+            <span class="paper-tag tag-gold">ジャーナル</span>
+          </div>
+        </div>
+        <div class="paper-arrow">→</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ EQUATION SHOWCASE ══════════════════ -->
+<section id="equations">
+  <div class="container">
+    <div class="sec-label">核心方程式</div>
+    <h2 class="sec-title">方程式<em>ショーケース</em></h2>
+    <p class="sec-sub">山口フレームワークの骨格をなす主要方程式の一覧。</p>
+    <div class="eq-showcase reveal">
+      <div class="eq-show-card">
+        <div class="eq-source">caostics.pdf — 大域的微分多様体基本式</div>
+        <div class="eq-name">大域的微分 = ガンマ函数</div>
+        <div class="eq-math">d/df F(x,y) = ∬1/(x log x)² dx_m<br>         + ∬1/(y log y)^½ dy_m = Γ(x,y)</div>
+      </div>
+      <div class="eq-show-card">
+        <div class="eq-source">20250205.pdf — DNA方程式</div>
+        <div class="eq-name">ゼータ函数 = シャノン公式</div>
+        <div class="eq-math gold-math">ζ(s) = β(p,q)/log x = x log x<br>‖ds²‖ = ‖x^½ log x‖⁴ = x^{-½}</div>
+      </div>
+      <div class="eq-show-card">
+        <div class="eq-source">jum.pdf — 非可換・オイラー積</div>
+        <div class="eq-name">非可換作用素定義</div>
+        <div class="eq-math teal-math">π(χ,x) = [iπ(χ,x), f(x)]<br>iπ∘f(x) = i∫x log x dx ≠ f∘π</div>
+      </div>
+      <div class="eq-show-card">
+        <div class="eq-source">esterate.pdf — 量子化</div>
+        <div class="eq-name">量子作用素 = ガンマ函数積分</div>
+        <div class="eq-math">⊕(iℏ∇)^⊕L = ∫e⁻ˣx^{1-t}dx_m<br>             = e^{-x log x} = m(x)</div>
+      </div>
+      <div class="eq-show-card">
+        <div class="eq-source">Kalabi-Yau.pdf — M理論・AdS5</div>
+        <div class="eq-name">AdS5計量 + ホッジ予想解決</div>
+        <div class="eq-math gold-math">‖ds²‖ = e^{-2πT|ψ|}[η_μν+h̄(x)]dx^μdx^ν + T²d²ψ<br>β(p,q) = d/df F + ∫C dx_m = 2(cos(ix log x) − i sin(ix log x))</div>
+      </div>
+      <div class="eq-show-card">
+        <div class="eq-source">matrix_reloaded.pdf — Secureproduct</div>
+        <div class="eq-name">極限行列 = 単位元</div>
+        <div class="eq-math teal-math">lim_{θ→0}(sinθ/cosθ)(θ 1 / 1 θ)(cosθ/sinθ) = (1 0 / 0 -1)<br>f⁻¹(x)·x·f(x) = I'm = [1,0]×[0,1]</div>
+      </div>
+      <div class="eq-show-card">
+        <div class="eq-source">Bada__1.pdf — TupleSpace AI</div>
+        <div class="eq-name">オイラー定数連分数 = アカシック</div>
+        <div class="eq-math">C = b₀ + c₁/(b₁ + c₂/(b₂ + c₃/(b₃ + …)))<br>x^{½+iy} = e^{x log x} = C</div>
+      </div>
+      <div class="eq-show-card">
+        <div class="eq-source">dalia.pdf — Magic演算子</div>
+        <div class="eq-name">T テンソル + ログ不等式</div>
+        <div class="eq-math gold-math">T^{≪(p,q)}, ⊠ = β(p,q)/log x<br>log(x log x) ≥ 2(y log y)^½</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ PROJECTS ══════════════════ -->
+<section id="projects">
+  <div class="container">
+    <div class="sec-label">ソフトウェア</div>
+    <h2 class="sec-title"><em>Projects</em> — 実装</h2>
+    <p class="sec-sub">山口フレームワークをコードとして具現化したソフトウェア群。
+    理論と実装の双方向的な検証を行う。</p>
+    <div class="projects-grid reveal">
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(74,128,208,.15)">🔤</div>
+          <span class="proj-lang" style="color:var(--blue2);border-color:rgba(74,128,208,.3)">C</span>
+        </div>
+        <div class="proj-title">Bada Language</div>
+        <div class="proj-sub">BADA PROGRAMMING LANGUAGE v3</div>
+        <div class="proj-desc">
+          山口フレームワーク作用素環プログラミングをC言語で実装した独自OOP言語。
+          カスタム演算子 &lt;-・-&lt;・&gt;- と約20種のオブジェクト型を持つ。
+          TupleSpace/Omega::DATABASEをネイティブ型として実装。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">⭐ 独自構文</span>
+            <span class="proj-stat">📦 4000+ LOC</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(200,164,74,.15)">🖥️</div>
+          <span class="proj-lang" style="color:var(--gold);border-color:rgba(200,164,74,.3)">C</span>
+        </div>
+        <div class="proj-title">BadaOS</div>
+        <div class="proj-sub">UBUNTU-COMPATIBLE OS SIMULATOR</div>
+        <div class="proj-desc">
+          Badaランタイム上に構築したUbuntu互換OSシミュレータ。
+          仮想ファイルシステム・プロセススケジューラ・
+          aptスタイルパッケージマネージャ・systemd-lite・
+          インタラクティブシェルを完備。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">🐧 Ubuntu互換</span>
+            <span class="proj-stat">📦 4000+ LOC</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(64,184,192,.15)">🧠</div>
+          <span class="proj-lang" style="color:var(--teal);border-color:rgba(64,184,192,.3)">C</span>
+        </div>
+        <div class="proj-title">omega_llm</div>
+        <div class="proj-sub">C-LANGUAGE LLM ENGINE</div>
+        <div class="proj-desc">
+          π-softmax・ℏ_eff注意スケーリング・ガンマ剥奪活性化・
+          TupleSpaceメモリをC言語で実装したLLMエンジン。
+          フレームワーク方程式をニューラルネット層として実装。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">🔬 π-softmax</span>
+            <span class="proj-stat">⚡ ℏ_eff注意</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(144,96,208,.15)">🔵</div>
+          <span class="proj-lang" style="color:var(--purple);border-color:rgba(144,96,208,.3)">HTML/JS</span>
+        </div>
+        <div class="proj-title">Jones-NN LLM Apps</div>
+        <div class="proj-sub">CHATGPT REINVENTED WITH JONES POLYNOMIALS</div>
+        <div class="proj-desc">
+          GoFデザインパターンをジョーンズ多項式結び目ノードとして
+          モデル化したHTML/JSアプリ群。Claude API統合・
+          パターン別システムプロンプト・ニューラル/結び目可視化を実装。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">🎭 GoF + Jones</span>
+            <span class="proj-stat">🤖 Claude API</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(192,64,64,.15)">🎙️</div>
+          <span class="proj-lang" style="color:#e08080;border-color:rgba(192,64,64,.3)">HTML/JS</span>
+        </div>
+        <div class="proj-title">Silent Talk</div>
+        <div class="proj-sub">SUBVOCALIZATION RECOGNITION APP</div>
+        <div class="proj-desc">
+          声帯発話・準発話・サイレント/体内リズムの3モードで動作する
+          サブボーカライゼーション認識インターフェース。
+          ジョーンズ結び目可視化・シャノン/β(p,q)メトリクスを実装。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">🎤 3モード</span>
+            <span class="proj-stat">📊 Shannon Entropy</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(74,128,208,.15)">🏁</div>
+          <span class="proj-lang" style="color:var(--blue2);border-color:rgba(74,128,208,.3)">HTML/JS</span>
+        </div>
+        <div class="proj-title">Go &amp; Shogi AI</div>
+        <div class="proj-sub">QUANTUM-MANIFOLD BOARD GAME AI</div>
+        <div class="proj-desc">
+          量子多様体着想AIエンジンを搭載した囲碁・将棋ゲーム。
+          フレームワーク方程式をゲーム評価論理にマッピングし、
+          陣地スコアリング・駒影響度・手選択温度を実装。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">♟️ 囲碁 + 将棋</span>
+            <span class="proj-stat">🔬 量子多様体AI</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(200,164,74,.15)">⚗️</div>
+          <span class="proj-lang" style="color:var(--gold);border-color:rgba(200,164,74,.3)">HTML/JS</span>
+        </div>
+        <div class="proj-title">TeX 数式清書エディタ</div>
+        <div class="proj-sub">YAMAGUCHI FRAMEWORK TEX EDITOR</div>
+        <div class="proj-desc">
+          全PDFから抽出した150種以上の固有方程式パレット・
+          MathJaxリアルタイムプレビュー・LaTeX論文出力を備えた
+          清書専用エディタ。左パレットのワンクリック挿入対応。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">📐 150+ 方程式</span>
+            <span class="proj-stat">📄 LaTeX出力</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(64,184,192,.15)">🔬</div>
+          <span class="proj-lang" style="color:var(--teal);border-color:rgba(64,184,192,.3)">HTML/JS</span>
+        </div>
+        <div class="proj-title">有機化学 構造式エディタ</div>
+        <div class="proj-sub">ORGANIC CHEMISTRY STRUCTURE EDITOR</div>
+        <div class="proj-desc">
+          手書き感覚で有機分子を描画できるキャンバス型エディタ。
+          chemfig/mhchem TeX出力・SMILES記法生成・
+          30種以上の官能基ライブラリ・SVGエクスポートに対応。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">⚗️ chemfig TeX</span>
+            <span class="proj-stat">🔗 SMILES</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <div class="proj-icon" style="background:rgba(144,96,208,.15)">🌐</div>
+          <span class="proj-lang" style="color:var(--purple);border-color:rgba(144,96,208,.3)">React</span>
+        </div>
+        <div class="proj-title">Bada Engine</div>
+        <div class="proj-sub">UNKNOWN PRIOR KNOWLEDGE ENGINE</div>
+        <div class="proj-desc">
+          未知事前確率エンジン公式
+          P(θ|D) ∝ Γ(α+H(D))·β(H_theory, H_proof)/ζ(H_conclusion+1) を
+          ReactでUIとして実装。TupleSpace・π-softmax・多様体可視化を統合。
+        </div>
+        <div class="proj-footer">
+          <div class="proj-stats">
+            <span class="proj-stat">🧮 Unknown Prior</span>
+            <span class="proj-stat">⚛️ React</span>
+          </div>
+          <span class="proj-link">View →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TIMELINE ══════════════════ -->
+<section id="timeline" style="padding:80px 0">
+  <div class="container">
+    <div class="sec-label">研究軌跡</div>
+    <h2 class="sec-title" style="margin-bottom:48px">Research <em>Timeline</em></h2>
+    <div class="tl-wrap">
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--gold);background:var(--gold)"></div>
+        <div class="tl-year">1998</div>
+        <div class="tl-title">富山大学入学試験との出会い</div>
+        <div class="tl-desc">対数函数・ベータ函数グラフ・非線形微分方程式の融合問題が、
+        大域的微分多様体理論の萌芽となる。ゼータ函数との同型を直観する。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--teal)"></div>
+        <div class="tl-year">2010s</div>
+        <div class="tl-title">フレームワーク体系化</div>
+        <div class="tl-desc">π(χ,x)非可換作用素・x log xエントロピー核・β(p,q)函数系を核とする
+        独自理論を体系化。広中平祐定理・グリシャ教授ペレルマン多様体を参照しながら構築。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--blue)"></div>
+        <div class="tl-year">2020s</div>
+        <div class="tl-title">論文群の整備 + ソフトウェア実装開始</div>
+        <div class="tl-desc">caostics.pdf・jum.pdf・Bada__1.pdf 等の理論文書を整備。
+        TupleSpace/Omega::DATABASE概念をプログラミング言語として実装する
+        Bada言語プロジェクトを開始。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--purple)"></div>
+        <div class="tl-year">2025.01</div>
+        <div class="tl-title">Bada Language v1-v3 + BadaOS 完成</div>
+        <div class="tl-desc">C言語による完全なOOP言語Bada（4000+行）と
+        Ubuntu互換OSシミュレータBadaOSを完成。
+        仮想ファイルシステム・プロセススケジューラ・aptマネージャを実装。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--gold)"></div>
+        <div class="tl-year">2025.03</div>
+        <div class="tl-title">Jones-NN / Silent Talk / GoShogi AI 完成</div>
+        <div class="tl-desc">GoFデザインパターン×ジョーンズ多項式によるLLMアプリ群、
+        サブボーカライゼーション認識、量子多様体囲碁・将棋AIを相次いで完成。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--teal);animation:pulse-ring 2s infinite"></div>
+        <div class="tl-year">2025 — 現在</div>
+        <div class="tl-title">TeX清書エディタ + 有機化学エディタ + GitHubサイト</div>
+        <div class="tl-desc">全論文の方程式を網羅したTeX清書専用エディタ・
+        有機化学構造式エディタ・そしてこのGitHubポートフォリオサイトを公開。
+        フレームワークの完全な公開に向けて継続中。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CONTACT ══════════════════ -->
+<section id="contact">
+  <div class="container">
+    <div class="sec-label">連絡先</div>
+    <h2 class="sec-title" style="margin-bottom:12px">Contact &amp; <em>Links</em></h2>
+    <p class="sec-sub">研究への問い合わせ・コラボレーションのご連絡はお気軽にどうぞ。</p>
+    <div class="contact-inner reveal">
+      <div>
+        <p style="font-size:16px;color:var(--text2);line-height:1.8;margin-bottom:28px">
+          山口フレームワークは現在も進化中です。
+          数学・物理学・コンピュータサイエンスの研究者、
+          またはフレームワークの実装に興味のある開発者からの
+          ご連絡をお待ちしています。
+        </p>
+        <div style="background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:20px 24px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:12px">核心方程式</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--blue2);line-height:2">
+            ζ(s) = β(p,q)/log x = x log x<br>
+            π(χ,x) = [iπ(χ,x), f(x)]<br>
+            ⊕(iℏ∇)^⊕L = e^{-x log x} = m(x)<br>
+            ‖ds²‖ = ‖x^½ log x‖⁴ = ζ(s)
+          </div>
+        </div>
+      </div>
+      <div class="contact-links">
+        <a class="contact-link" href="https://github.com/MasaakiYamaguchi" target="_blank">
+          <div class="contact-link-icon" style="background:rgba(255,255,255,.08)">
+            <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+          </div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">GitHub</div>
+            <div class="contact-link-val">github.com/MasaakiYamaguchi</div>
+          </div>
+          <span style="color:var(--text3)">→</span>
+        </a>
+        <a class="contact-link" href="#papers">
+          <div class="contact-link-icon" style="background:rgba(200,164,74,.12)">📄</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">Research Papers</div>
+            <div class="contact-link-val">16 論文 · PDF形式で公開中</div>
+          </div>
+          <span style="color:var(--text3)">→</span>
+        </a>
+        <a class="contact-link" href="#projects">
+          <div class="contact-link-icon" style="background:rgba(74,128,208,.12)">💻</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">Software Projects</div>
+            <div class="contact-link-val">Bada · BadaOS · omega_llm · Jones-NN</div>
+          </div>
+          <span style="color:var(--text3)">→</span>
+        </a>
+        <a class="contact-link" href="#equations">
+          <div class="contact-link-icon" style="background:rgba(64,184,192,.12)">∑</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">Equation Archive</div>
+            <div class="contact-link-val">54+ 核心方程式 · TeX形式で利用可能</div>
+          </div>
+          <span style="color:var(--text3)">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="footer-note">
+      <div class="footer-eq">
+        d/df F(x,y) = ∬1/(x log x)² dx_m + ∬1/(y log y)^½ dy_m = Γ(x,y)
+        &nbsp;·&nbsp;
+        ζ(s) = β(p,q)/log x = x log x
+        &nbsp;·&nbsp;
+        ⊕(iℏ∇)^⊕L = e^{-x log x}
+      </div>
+      <div class="footer-copy">
+        © 2025 Masaaki Yamaguchi · 山口 雅彰 · Global Differential Manifold Research
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SCRIPTS ══════════════════ -->
+<script>
+/* ── Canvas Background: Knot/Manifold particles ── */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], lines = [], t = 0;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); initNodes(); });
+
+  // Nodes: represent atoms of manifold
+  function initNodes() {
+    nodes = [];
+    const n = Math.floor((W * H) / 22000);
+    for (let i = 0; i < n; i++) {
+      nodes.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - .5) * .25,
+        vy: (Math.random() - .5) * .25,
+        r: Math.random() * 1.5 + .5,
+        phase: Math.random() * Math.PI * 2,
+        col: Math.random() < .4 ? '#4a80d0' : Math.random() < .6 ? '#c8a44a' : '#40b8c0'
+      });
+    }
+  }
+  initNodes();
+
+  // Jones knot curves
+  const KNOTS = [];
+  function initKnots() {
+    KNOTS.length = 0;
+    const n = 3;
+    for (let k = 0; k < n; k++) {
+      KNOTS.push({
+        cx: W * (.2 + Math.random() * .6),
+        cy: H * (.2 + Math.random() * .6),
+        a: 80 + Math.random() * 120,
+        b: 60 + Math.random() * 100,
+        p: 2 + Math.floor(Math.random() * 3),
+        q: 3 + Math.floor(Math.random() * 4),
+        phase: Math.random() * Math.PI * 2,
+        col: ['rgba(74,128,208,', 'rgba(200,164,74,', 'rgba(64,184,192,'][k % 3],
+        speed: .0003 + Math.random() * .0003,
+      });
+    }
+  }
+  initKnots();
+
+  function drawKnot(k, time) {
+    const steps = 300;
+    ctx.beginPath();
+    for (let i = 0; i <= steps; i++) {
+      const th = (i / steps) * Math.PI * 2 * k.q + k.phase + time * k.speed * 20;
+      const r  = k.a + k.b * Math.cos(k.p * th / k.q);
+      const x  = k.cx + r * Math.cos(th);
+      const y  = k.cy + r * Math.sin(th);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = k.col + '.06)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Grid lines (manifold lattice)
+  function drawGrid(time) {
+    ctx.save();
+    const gs = 80;
+    const ox = (time * 8) % gs;
+    ctx.strokeStyle = 'rgba(74,128,208,.03)';
+    ctx.lineWidth = 1;
+    for (let x = ox; x < W + gs; x += gs) {
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+    }
+    for (let y = (time * 6) % gs; y < H + gs; y += gs) {
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function frame() {
+    t += .012;
+    ctx.clearRect(0, 0, W, H);
+
+    drawGrid(t);
+
+    // Knots
+    KNOTS.forEach(k => drawKnot(k, t));
+
+    // Move nodes
+    nodes.forEach(n => {
+      n.x += n.vx + Math.sin(t * .3 + n.phase) * .1;
+      n.y += n.vy + Math.cos(t * .4 + n.phase) * .1;
+      if (n.x < 0) n.x = W;
+      if (n.x > W) n.x = 0;
+      if (n.y < 0) n.y = H;
+      if (n.y > H) n.y = 0;
+    });
+
+    // Draw connections (manifold edges)
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i+1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const d  = Math.sqrt(dx*dx + dy*dy);
+        if (d < 120) {
+          const a = (1 - d/120) * .18;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(74,128,208,${a})`;
+          ctx.lineWidth = .8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Draw nodes
+    nodes.forEach(n => {
+      const glow = .4 + .3 * Math.sin(t * 1.5 + n.phase);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+      ctx.fillStyle = n.col.replace(')', `,${glow})`).replace('rgb','rgba').replace('#4a80d0',`rgba(74,128,208,${glow})`).replace('#c8a44a',`rgba(200,164,74,${glow})`).replace('#40b8c0',`rgba(64,184,192,${glow})`);
+      ctx.fill();
+    });
+
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ── Scroll Reveal ── */
+const revealEls = document.querySelectorAll('.reveal');
+const tlItems   = document.querySelectorAll('.tl-item');
+
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: .12 });
+
+revealEls.forEach(el => io.observe(el));
+
+const io2 = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 120);
+      io2.unobserve(e.target);
+    }
+  });
+}, { threshold: .1 });
+tlItems.forEach(el => io2.observe(el));
+
+/* ── Number counter animation ── */
+function animateCounter(el, target, duration) {
+  const isInf = target === '∞';
+  if (isInf) return;
+  let start = 0;
+  const step = target / (duration / 16);
+  const tick = () => {
+    start = Math.min(start + step, target);
+    el.textContent = Math.floor(start);
+    if (start < target) requestAnimationFrame(tick);
+  };
+  tick();
+}
+
+const statsIo = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.stat-num').forEach(el => {
+        const val = parseInt(el.textContent);
+        if (!isNaN(val)) animateCounter(el, val, 1200);
+      });
+      statsIo.unobserve(e.target);
+    }
+  });
+}, { threshold: .5 });
+const statsBar = document.querySelector('.stats-bar');
+if (statsBar) statsIo.observe(statsBar);
+
+/* ── Smooth Scroll ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+/* ── Nav active link on scroll ── */
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = Array.from(document.querySelectorAll('section[id]'));
+window.addEventListener('scroll', () => {
+  const y = window.scrollY + 100;
+  let cur = '';
+  sections.forEach(s => { if (y >= s.offsetTop) cur = s.id; });
+  navLinks.forEach(l => {
+    l.style.color = l.getAttribute('href') === '#' + cur ? 'var(--gold)' : '';
+  });
+}, { passive: true });
+</script>
 </body>
 </html>
