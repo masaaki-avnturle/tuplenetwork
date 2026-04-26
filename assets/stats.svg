@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 80" width="900" height="80">
+  <defs>
+    <style>
+      .bg { fill: #0d1520; }
+      .num { font-family: Georgia, serif; font-size: 28px; font-weight: 700; fill: #c8a44a; }
+      .lbl { font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 2px;
+              text-transform: uppercase; fill: rgba(136,152,184,0.8); }
+      .div { stroke: rgba(80,120,200,0.2); stroke-width: 1; }
+      .bar-top { fill: none; stroke: url(#g1); stroke-width: 1.5; }
+      .bar-btm { fill: none; stroke: url(#g1); stroke-width: 1.5; }
+      .num-anim { animation: countUp 1.5s ease-out both; }
+      @keyframes countUp {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .n1 { animation-delay: 0.1s; }
+      .n2 { animation-delay: 0.25s; }
+      .n3 { animation-delay: 0.4s; }
+      .n4 { animation-delay: 0.55s; }
+      .n5 { animation-delay: 0.7s; }
+      .pulse-dot { animation: pulseDot 2s ease-in-out infinite; }
+      @keyframes pulseDot {
+        0%,100% { opacity: 0.4; r: 3; }
+        50%      { opacity: 1;   r: 5; }
+      }
+    </style>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#4a80d0" stop-opacity="0"/>
+      <stop offset="50%"  stop-color="#40b8c0"/>
+      <stop offset="100%" stop-color="#4a80d0" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect class="bg" width="900" height="80" rx="4"/>
+  <line class="bar-top" x1="20" y1="1"  x2="880" y2="1"/>
+  <line class="bar-btm" x1="20" y1="79" x2="880" y2="79"/>
+
+  <!-- 5 stat items: 180px each -->
+  <!-- Item 1 -->
+  <g class="num-anim n1">
+    <text class="num" x="90" y="44" text-anchor="middle">16</text>
+    <text class="lbl" x="90" y="62" text-anchor="middle">Research Files</text>
+  </g>
+  <line class="div" x1="180" y1="12" x2="180" y2="68"/>
+
+  <!-- Item 2 -->
+  <g class="num-anim n2">
+    <text class="num" x="270" y="44" text-anchor="middle">54</text>
+    <text class="lbl" x="270" y="62" text-anchor="middle">Core Equations</text>
+  </g>
+  <line class="div" x1="360" y1="12" x2="360" y2="68"/>
+
+  <!-- Item 3 -->
+  <g class="num-anim n3">
+    <text class="num" x="450" y="44" text-anchor="middle">9</text>
+    <text class="lbl" x="450" y="62" text-anchor="middle">Software Projects</text>
+  </g>
+  <line class="div" x1="540" y1="12" x2="540" y2="68"/>
+
+  <!-- Item 4 — infinity symbol -->
+  <g class="num-anim n4">
+    <text class="num" x="630" y="44" text-anchor="middle">∞</text>
+    <text class="lbl" x="630" y="62" text-anchor="middle">Akashic Records</text>
+  </g>
+  <line class="div" x1="720" y1="12" x2="720" y2="68"/>
+
+  <!-- Item 5 -->
+  <g class="num-anim n5">
+    <text class="num" x="810" y="44" text-anchor="middle">1</text>
+    <text class="lbl" x="810" y="62" text-anchor="middle">Unified Theory</text>
+    <!-- Pulse dot -->
+    <circle class="pulse-dot" cx="855" cy="30" r="3" fill="rgba(64,184,192,0.8)"/>
+  </g>
+</svg>
