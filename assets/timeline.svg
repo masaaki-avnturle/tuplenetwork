@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" width="900" height="240">
+  <defs>
+    <style>
+      .bg { fill: #080c12; }
+      .tl-line { stroke: url(#tl-grad); stroke-width: 1.5; fill: none; }
+      .dot-gold   { fill: #c8a44a; }
+      .dot-teal   { fill: none; stroke: #40b8c0; stroke-width: 2; }
+      .dot-blue   { fill: none; stroke: #4a80d0; stroke-width: 2; }
+      .dot-purple { fill: none; stroke: #9060d0; stroke-width: 2; }
+      .yr   { font-family: 'Courier New',monospace; font-size: 9px; letter-spacing: 2px;
+               text-transform: uppercase; fill: rgba(68,85,104,0.9); }
+      .ttl  { font-family: Georgia, serif; font-size: 13px; font-weight: 600; fill: #d8e4f8; }
+      .desc { font-family: Georgia, serif; font-size: 10.5px; fill: rgba(136,152,184,0.8); }
+
+      .item { animation: tlSlide 0.6s both; }
+      .i1 { animation-delay: 0.05s; }
+      .i2 { animation-delay: 0.2s; }
+      .i3 { animation-delay: 0.35s; }
+      .i4 { animation-delay: 0.5s; }
+      .i5 { animation-delay: 0.65s; }
+      .i6 { animation-delay: 0.8s; }
+      @keyframes tlSlide {
+        from { opacity: 0; transform: translateX(16px); }
+        to   { opacity: 1; transform: translateX(0); }
+      }
+
+      /* Pulse for latest dot */
+      .pulse-latest { animation: pulseLatest 2s ease-in-out infinite; }
+      @keyframes pulseLatest {
+        0%,100% { r: 5; opacity: 0.6; }
+        50%      { r: 8; opacity: 1; }
+      }
+
+      .sec-lbl  { font-family: 'Courier New',monospace; font-size: 8px; letter-spacing: 4px;
+                   text-transform: uppercase; fill: rgba(74,128,208,0.8); }
+      .sec-line { stroke: rgba(74,128,208,0.5); stroke-width: 1; }
+    </style>
+    <linearGradient id="tl-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="transparent"/>
+      <stop offset="20%"  stop-color="#4a80d0"/>
+      <stop offset="60%"  stop-color="#40b8c0"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </linearGradient>
+  </defs>
+
+  <rect class="bg" width="900" height="240"/>
+
+  <!-- Section label -->
+  <line class="sec-line" x1="20" y1="18" x2="44" y2="18"/>
+  <text class="sec-lbl" x="52" y="22">研究軌跡 — Research Timeline</text>
+
+  <!-- Timeline vertical line -->
+  <line class="tl-line" x1="90" y1="34" x2="90" y2="224"/>
+
+  <!-- Item 1: 1998 -->
+  <g class="item i1">
+    <circle class="dot-gold" cx="90" cy="44"  r="5"/>
+    <text class="yr"  x="106" y="42">1998</text>
+    <text class="ttl" x="158" y="42">富山大学入学試験との出会い</text>
+    <text class="desc" x="158" y="56">対数函数・ベータ函数グラフ・非線形微分方程式の融合から大域的微分多様体理論の萌芽。</text>
+  </g>
+
+  <!-- Item 2: 2010s -->
+  <g class="item i2">
+    <circle class="dot-teal" cx="90" cy="88"  r="5"/>
+    <text class="yr"  x="106" y="86">2010s</text>
+    <text class="ttl" x="158" y="86">フレームワーク体系化</text>
+    <text class="desc" x="158" y="100">π(χ,x)非可換作用素・x·log xエントロピー核・β(p,q)函数系を核とする独自理論を構築。</text>
+  </g>
+
+  <!-- Item 3: 2020s -->
+  <g class="item i3">
+    <circle class="dot-blue" cx="90" cy="132" r="5"/>
+    <text class="yr"  x="106" y="130">2020s</text>
+    <text class="ttl" x="158" y="130">論文群整備 + ソフトウェア実装開始</text>
+    <text class="desc" x="158" y="144">caostics.pdf・jum.pdf等を整備。Bada言語・TupleSpace/Omega::DATABASEの実装開始。</text>
+  </g>
+
+  <!-- Item 4: 2025.01 -->
+  <g class="item i4">
+    <circle class="dot-purple" cx="90" cy="168" r="5"/>
+    <text class="yr"  x="106" y="166">2025.01</text>
+    <text class="ttl" x="158" y="166">Bada Language v3 + BadaOS 完成</text>
+    <text class="desc" x="158" y="180">C言語OOP言語Bada（4000+行）とUbuntu互換OSシミュレータBadaOSを完成。</text>
+  </g>
+
+  <!-- Item 5: 2025.03 -->
+  <g class="item i5">
+    <circle class="dot-gold" cx="90" cy="200" r="5"/>
+    <text class="yr"  x="106" y="198">2025.03</text>
+    <text class="ttl" x="158" y="198">Jones-NN · Silent Talk · Go &amp; Shogi AI 完成</text>
+    <text class="desc" x="158" y="212">GoF×Jones多項式LLMアプリ群、サブボーカライゼーション認識、量子多様体ゲームAI完成。</text>
+  </g>
+
+  <!-- Item 6: 2025 current — pulse dot -->
+  <g class="item i6">
+    <circle class="pulse-latest" cx="90" cy="230" fill="#40b8c0" opacity="0.8"/>
+    <text class="yr"  x="106" y="228" fill="rgba(64,184,192,0.8)">2025 — 現在</text>
+    <text class="ttl" x="158" y="228" fill="rgba(64,184,192,0.9)">GitHub公開 · 統一理論の完成へ</text>
+  </g>
+</svg>
