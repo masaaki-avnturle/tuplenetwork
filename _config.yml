@@ -1,0 +1,66 @@
+# ═══════════════════════════════════════════════════════
+#  GitHub Pages 設定ファイル — tuplenetwork
+#  Repository : masaaki-avnturle/tuplenetwork
+#  Live URL   : https://masaaki-avnturle.github.io/tuplenetwork/
+# ═══════════════════════════════════════════════════════
+
+# --- サイト基本情報 ---
+title: "Masaaki Yamaguchi — Global Differential Manifold Research"
+description: >
+  大域的微分多様体・Jones多項式・Shannon Entropy統一理論。
+  独立研究者・開発者 山口雅旭のポートフォリオ。
+  TupleSpace / Akashic Record / Bada Language / omega_llm
+
+author: "Masaaki Yamaguchi"
+email: ""
+lang: "ja"
+
+# --- URL設定（サブパス必須） ---
+url: "https://masaaki-avnturle.github.io"
+baseurl: "/tuplenetwork"
+
+# --- GitHub Pages テーマ（テーマなし = index.htmlをそのまま使用） ---
+theme: null
+
+# --- ビルド設定 ---
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  hard_wrap: false
+  math_engine: mathjax
+
+# --- プラグイン（GitHub Pages 許可済み） ---
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# --- SEO設定 ---
+twitter:
+  username: ""
+social:
+  name: "Masaaki Yamaguchi"
+  links:
+    - https://github.com/masaaki-avnturle
+
+# --- ファイル除外 ---
+exclude:
+  - "*.sh"
+  - "Gemfile"
+  - "Gemfile.lock"
+  - "node_modules"
+  - "vendor"
+  - ".DS_Store"
+
+# --- インクルード（assetsフォルダのSVGを公開） ---
+include:
+  - assets
+  - "*.svg"
+
+# --- Sass（使用しない） ---
+sass:
+  style: compressed
+
+# --- パーマリンク ---
+permalink: pretty
