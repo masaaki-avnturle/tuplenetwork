@@ -19,11 +19,11 @@
 
 <div align="center">
 
-### 🌐 [フルサイト（CSS・JSアニメーション完全版）を見る →](https://MasaakiYamaguchi.github.io/)
+### 🌐 [フルサイト（CSS・JSアニメーション完全版）を見る →](https://masaaki-avnturle.github.io/tuplenetwork)
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Site-4a80d0?style=for-the-badge&logo=github&logoColor=white&labelColor=04060a)](https://MasaakiYamaguchi.github.io/)
-[![Research](https://img.shields.io/badge/Research-Global%20Differential%20Manifold-c8a44a?style=for-the-badge&labelColor=04060a)](https://github.com/MasaakiYamaguchi)
-[![Papers](https://img.shields.io/badge/Papers-16%20Files-40b8c0?style=for-the-badge&labelColor=04060a)](https://github.com/MasaakiYamaguchi)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live%20Site-4a80d0?style=for-the-badge&logo=github&logoColor=white&labelColor=04060a)](https://masaaki-avnturle.github.io/tuplenetwork)
+[![Research](https://img.shields.io/badge/Research-Global%20Differential%20Manifold-c8a44a?style=for-the-badge&labelColor=04060a)](https://github.com/masaaki-avnturle)
+[![Papers](https://img.shields.io/badge/Papers-16%20Files-40b8c0?style=for-the-badge&labelColor=04060a)](https://github.com/masaaki-avnturle)
 
 </div>
 
