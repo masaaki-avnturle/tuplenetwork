@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" width="900" height="200">
+  <defs>
+    <style>
+      .bg    { fill: #080c12; }
+      .panel { fill: #111a28; }
+      .bdr   { stroke: rgba(80,120,200,0.2); stroke-width: 0.8; fill: none; }
+      .bdr-g { stroke: rgba(200,164,74,0.3);  stroke-width: 0.8; fill: none; }
+      .bdr-t { stroke: rgba(64,184,192,0.3);  stroke-width: 0.8; fill: none; }
+      .src   { font-family: 'Courier New',monospace; font-size: 7.5px; letter-spacing: 2px;
+               text-transform: uppercase; fill: rgba(68,85,104,0.9); }
+      .ename { font-family: Georgia,serif; font-size: 12px; fill: rgba(136,152,184,0.85); }
+      .math  { font-family: 'Courier New',monospace; font-size: 10px;
+               fill: rgba(106,160,240,0.85); }
+      .math-g{ font-family: 'Courier New',monospace; font-size: 10px;
+               fill: rgba(200,164,74,0.85); }
+      .math-t{ font-family: 'Courier New',monospace; font-size: 10px;
+               fill: rgba(64,184,192,0.85); }
+      .acc-l { stroke-width: 2; fill: none; }
+      .acc-b { stroke: #4a80d0; }
+      .acc-gg{ stroke: #c8a44a; }
+      .acc-t { stroke: #40b8c0; }
+
+      /* Slide-in animations for each card */
+      .c1 { animation: slideIn 0.7s 0.1s both; }
+      .c2 { animation: slideIn 0.7s 0.25s both; }
+      .c3 { animation: slideIn 0.7s 0.4s both; }
+      .c4 { animation: slideIn 0.7s 0.55s both; }
+      .c5 { animation: slideIn 0.7s 0.7s both; }
+      .c6 { animation: slideIn 0.7s 0.85s both; }
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Hover-like border glow pulse on cards */
+      .glow-b { animation: glowB 4s ease-in-out infinite; }
+      .glow-g { animation: glowG 4s ease-in-out 1s infinite; }
+      .glow-t { animation: glowT 4s ease-in-out 2s infinite; }
+      @keyframes glowB {
+        0%,100% { opacity: 0.2; } 50% { opacity: 0.7; }
+      }
+      @keyframes glowG {
+        0%,100% { opacity: 0.15; } 50% { opacity: 0.6; }
+      }
+      @keyframes glowT {
+        0%,100% { opacity: 0.15; } 50% { opacity: 0.65; }
+      }
+
+      /* Title bar */
+      .sec-lbl { font-family: 'Courier New',monospace; font-size: 8px; letter-spacing: 4px;
+                  text-transform: uppercase; fill: rgba(74,128,208,0.8); }
+      .sec-line { stroke: rgba(74,128,208,0.5); stroke-width: 1; }
+      .sec-title { font-family: Georgia,serif; font-size: 18px; fill: #d8e4f8; }
+      .sec-em    { font-family: Georgia,serif; font-style: italic; fill: #c8a44a; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="900" height="200"/>
+
+  <!-- Section label -->
+  <line class="sec-line" x1="20" y1="22" x2="44" y2="22"/>
+  <text class="sec-lbl" x="52" y="26">核心方程式 — Equation Showcase</text>
+
+  <!-- 6 equation cards, 2 rows × 3 cols -->
+  <!-- Row 1 -->
+
+  <!-- Card 1: blue -->
+  <g class="c1">
+    <rect class="panel bdr glow-b" x="20"  y="38" width="272" height="68" rx="4"/>
+    <line class="acc-l acc-b" x1="20" y1="38" x2="20" y2="106"/>
+    <text class="src"   x="32" y="52">caostics.pdf</text>
+    <text class="ename" x="32" y="66">大域的微分 = Γ(x,y)</text>
+    <text class="math"  x="32" y="82">d/df F = ∬1/(x·logx)² dx_m</text>
+    <text class="math"  x="32" y="96">       + ∬1/(y·logy)^½ dy_m</text>
+  </g>
+
+  <!-- Card 2: gold -->
+  <g class="c2">
+    <rect class="panel bdr-g glow-g" x="314" y="38" width="272" height="68" rx="4"/>
+    <line class="acc-l acc-gg" x1="314" y1="38" x2="314" y2="106"/>
+    <text class="src"    x="326" y="52">20250205.pdf — DNA方程式</text>
+    <text class="ename"  x="326" y="66">ζ(s) = Shannon公式</text>
+    <text class="math-g" x="326" y="82">ζ(s) = β(p,q)/log x = x·log x</text>
+    <text class="math-g" x="326" y="96">‖ds²‖ = ‖x^½·log x‖⁴ = x^{-½}</text>
+  </g>
+
+  <!-- Card 3: teal -->
+  <g class="c3">
+    <rect class="panel bdr-t glow-t" x="608" y="38" width="272" height="68" rx="4"/>
+    <line class="acc-l acc-t" x1="608" y1="38" x2="608" y2="106"/>
+    <text class="src"    x="620" y="52">jum.pdf — 非可換演算子</text>
+    <text class="ename"  x="620" y="66">π(χ,x) 非可換定義</text>
+    <text class="math-t" x="620" y="82">π(χ,x) = [iπ(χ,x), f(x)]</text>
+    <text class="math-t" x="620" y="96">iπ∘f(x) ≠ f∘π(x)</text>
+  </g>
+
+  <!-- Row 2 -->
+
+  <!-- Card 4: blue -->
+  <g class="c4">
+    <rect class="panel bdr glow-b" x="20"  y="120" width="272" height="68" rx="4"/>
+    <line class="acc-l acc-b" x1="20" y1="120" x2="20" y2="188"/>
+    <text class="src"   x="32" y="134">esterate.pdf — 量子化</text>
+    <text class="ename" x="32" y="148">量子作用素 = Γ関数積分</text>
+    <text class="math"  x="32" y="164">⊕(iℏ∇)^⊕L = ∫e⁻ˣ·x^{1-t}dx_m</text>
+    <text class="math"  x="32" y="178">             = e^{-x·log x}</text>
+  </g>
+
+  <!-- Card 5: gold -->
+  <g class="c5">
+    <rect class="panel bdr-g glow-g" x="314" y="120" width="272" height="68" rx="4"/>
+    <line class="acc-l acc-gg" x1="314" y1="120" x2="314" y2="188"/>
+    <text class="src"    x="326" y="134">Kalabi-Yau.pdf — AdS5</text>
+    <text class="ename"  x="326" y="148">AdS5 計量 + D-ブレーン</text>
+    <text class="math-g" x="326" y="164">‖ds²‖ = e^{-2πT|ψ|}[η+h̄(x)]dxdx</text>
+    <text class="math-g" x="326" y="178">       + T²d²ψ</text>
+  </g>
+
+  <!-- Card 6: teal -->
+  <g class="c6">
+    <rect class="panel bdr-t glow-t" x="608" y="120" width="272" height="68" rx="4"/>
+    <line class="acc-l acc-t" x1="608" y1="120" x2="608" y2="188"/>
+    <text class="src"    x="620" y="134">dalia.pdf — Magic演算子</text>
+    <text class="ename"  x="620" y="148">T テンソル + 不等式</text>
+    <text class="math-t" x="620" y="164">T^{≪(p,q)}, ⊠ = β(p,q)/log x</text>
+    <text class="math-t" x="620" y="178">log(x·log x) ≥ 2(y·log y)^½</text>
+  </g>
+</svg>
