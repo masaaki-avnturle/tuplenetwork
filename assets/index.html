@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>山口 雅旭 — Global Differential Manifold Research</title>
+<meta name="description" content="大域的微分多様体・Jones多項式・Shannon Entropy統一理論。独立研究者・開発者 山口雅旭のポートフォリオ。tuplenetwork / Bada リポジトリ完全公開。">
+<link rel="canonical" href="https://masaaki-avnturle.github.io/tuplenetwork/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════
+   DESIGN TOKENS
+════════════════════════════════════════════ */
+:root {
+  --void:   #03050a;
+  --deep:   #07090f;
+  --surf:   #0c1220;
+  --panel:  #101828;
+  --bdr:    rgba(74,128,208,.16);
+  --bdr2:   rgba(74,128,208,.4);
+  --gold:   #c8a44a; --gold2: #e8c060;
+  --blue:   #4a80d0; --blue2: #6aa0f0;
+  --teal:   #3ab8c0; --teal2: #5dd8e0;
+  --purp:   #8850d0; --purp2: #a870f0;
+  --rose:   #d04060;
+  --txt:    #d4e2f8; --txt2: #7890b8; --txt3: #3a4a60;
+  --gB: rgba(74,128,208,.22); --gG: rgba(200,164,74,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--void);color:var(--txt);font-family:'EB Garamond',serif;line-height:1.72;overflow-x:hidden}
+::selection{background:rgba(74,128,208,.35);color:#fff}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:rgba(74,128,208,.5);border-radius:3px}
+
+/* ── Scroll progress ── */
+#spb{position:fixed;top:0;left:0;height:2px;width:0;z-index:9999;
+  background:linear-gradient(90deg,var(--blue),var(--teal),var(--gold));
+  box-shadow:0 0 8px var(--teal);transition:width .08s linear}
+
+/* ── CRT scanlines ── */
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px)}
+
+/* ── Canvas ── */
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;
+  background:rgba(3,5,10,.88);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;padding:0 36px;gap:0}
+.nl{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
+  color:var(--gold);margin-right:auto;text-decoration:none;letter-spacing:.5px}
+.nl span{color:var(--blue2);font-weight:300}
+.nls{display:flex;gap:2px}
+.na{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.8px;
+  text-transform:uppercase;color:var(--txt2);text-decoration:none;
+  padding:5px 12px;border-radius:3px;transition:all .2s}
+.na:hover,.na.active{color:var(--gold);background:rgba(200,164,74,.08)}
+.ngh{display:flex;align-items:center;gap:5px;margin-left:16px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;
+  color:var(--txt2);text-decoration:none;padding:5px 12px;
+  border:1px solid var(--bdr);border-radius:3px;transition:all .2s}
+.ngh:hover{color:var(--txt);border-color:var(--bdr2);background:rgba(74,128,208,.08)}
+
+/* ── SECTIONS / CONTAINER ── */
+section{position:relative;z-index:2;padding:90px 0 60px}
+.con{max-width:1100px;margin:0 auto;padding:0 40px}
+.sl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:4px;
+  text-transform:uppercase;color:var(--txt3);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px}
+.sl::before{content:'';display:block;width:24px;height:1px;background:var(--bdr2)}
+h2{font-family:'EB Garamond',serif;font-size:clamp(28px,4vw,48px);
+  font-weight:700;color:var(--txt);margin-bottom:16px;line-height:1.2}
+h2 em{font-style:italic;color:var(--gold2)}
+.sub{font-size:16px;color:var(--txt2);max-width:640px;margin-bottom:48px;line-height:1.8}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;padding-top:54px}
+.hero-in{max-width:1100px;margin:0 auto;padding:0 40px;
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.h-eyb{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:4px;
+  text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+.h-name{font-family:'EB Garamond',serif;font-size:clamp(48px,7vw,96px);
+  font-weight:700;line-height:.95;color:var(--txt);margin-bottom:8px;
+  position:relative}
+.h-namej{font-family:'Noto Serif JP',serif;font-size:22px;color:var(--gold);
+  letter-spacing:8px;display:block;margin-bottom:24px}
+.h-desc{font-size:15px;color:var(--txt2);line-height:1.9;margin-bottom:28px;max-width:480px}
+.h-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:32px}
+.ht{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;padding:4px 10px;border-radius:2px;border:1px solid}
+.ht-b{color:var(--blue2);border-color:rgba(74,128,208,.35);background:rgba(74,128,208,.07)}
+.ht-g{color:var(--gold);border-color:rgba(200,164,74,.35);background:rgba(200,164,74,.07)}
+.ht-t{color:var(--teal);border-color:rgba(58,184,192,.35);background:rgba(58,184,192,.07)}
+.ht-p{color:var(--purp2);border-color:rgba(136,80,208,.35);background:rgba(136,80,208,.07)}
+.h-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-p{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;text-decoration:none;padding:11px 24px;border-radius:3px;
+  background:var(--blue);color:#fff;transition:all .25s;
+  box-shadow:0 0 20px rgba(74,128,208,.3)}
+.btn-p:hover{background:var(--blue2);box-shadow:0 0 32px rgba(74,128,208,.5);transform:translateY(-1px)}
+.btn-o{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;
+  text-transform:uppercase;text-decoration:none;padding:10px 24px;border-radius:3px;
+  border:1px solid var(--bdr2);color:var(--txt2);transition:all .25s}
+.btn-o:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,164,74,.07)}
+
+/* Hero equations panel */
+.h-eq{background:rgba(7,9,15,.7);border:1px solid var(--bdr);border-radius:6px;
+  padding:24px 28px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  line-height:2.0;position:relative;overflow:hidden}
+.h-eq::before{content:'// core equations — yamaguchi framework';
+  display:block;font-size:9px;letter-spacing:2px;color:var(--txt3);
+  text-transform:uppercase;margin-bottom:14px}
+.eq-l{color:var(--blue2)}
+.eq-l.g{color:var(--gold)}
+.eq-l.t{color:var(--teal)}
+.eq-l.p{color:var(--purp2)}
+/* scan line flash */
+@keyframes eqScan{0%{top:-20%}100%{top:110%}}
+.h-eq::after{content:'';position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(58,184,192,.4),transparent);
+  animation:eqScan 4s linear infinite;pointer-events:none}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);
+  border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);
+  margin:0;position:relative;z-index:2}
+.si{padding:24px 0;text-align:center;border-right:1px solid var(--bdr)}
+.si:last-child{border-right:0}
+.sn{font-family:'EB Garamond',serif;font-size:36px;font-weight:700;color:var(--gold)}
+.sk{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--txt3);margin-top:4px}
+
+/* ── FRAMEWORK GRID ── */
+.fw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.fw-c{background:var(--panel);border:1px solid var(--bdr);border-radius:6px;
+  padding:24px;position:relative;overflow:hidden;transition:border-color .25s,transform .2s}
+.fw-c:hover{transform:translateY(-2px)}
+.fw-c.cb:hover{border-color:rgba(74,128,208,.5)}
+.fw-c.cg:hover{border-color:rgba(200,164,74,.5)}
+.fw-c.ct:hover{border-color:rgba(58,184,192,.5)}
+.fw-c.cp:hover{border-color:rgba(136,80,208,.5)}
+.fw-ico{font-family:'EB Garamond',serif;font-size:36px;font-weight:700;
+  margin-bottom:12px;display:block}
+.cb .fw-ico{color:var(--blue2)} .cg .fw-ico{color:var(--gold)}
+.ct .fw-ico{color:var(--teal)}  .cp .fw-ico{color:var(--purp2)}
+.fw-t{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  color:var(--txt);margin-bottom:10px;letter-spacing:.3px}
+.fw-eq{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt2);
+  line-height:1.8;margin-bottom:10px;padding:8px 10px;
+  background:rgba(0,0,0,.3);border-radius:3px;border-left:2px solid}
+.cb .fw-eq{border-color:var(--blue)} .cg .fw-eq{border-color:var(--gold)}
+.ct .fw-eq{border-color:var(--teal)} .cp .fw-eq{border-color:var(--purp)}
+.fw-d{font-size:13px;color:var(--txt2);line-height:1.7}
+
+/* ════════════════════════════════════════════
+   REPOSITORY SCANNER SECTION
+════════════════════════════════════════════ */
+#repos{padding:80px 0}
+.repo-wrap{display:flex;flex-direction:column;gap:56px}
+.rg-hdr{display:flex;align-items:center;gap:16px;margin-bottom:20px;
+  padding-bottom:16px;border-bottom:1px solid var(--bdr)}
+.rg-icon{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:20px;flex-shrink:0}
+.rg-meta{flex:1}
+.rg-name{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;
+  color:var(--txt)}
+.rg-name span{color:var(--txt3);font-weight:300}
+.rg-url{font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:var(--txt3);letter-spacing:1px;margin-top:3px}
+.gh-btn{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;text-decoration:none;padding:6px 14px;border-radius:3px;
+  border:1px solid;transition:all .2s;white-space:nowrap}
+.gh-btn-b{color:var(--blue2);border-color:rgba(74,128,208,.4)}
+.gh-btn-b:hover{background:rgba(74,128,208,.1);box-shadow:0 0 12px rgba(74,128,208,.3)}
+.gh-btn-g{color:var(--gold);border-color:rgba(200,164,74,.4)}
+.gh-btn-g:hover{background:rgba(200,164,74,.1);box-shadow:0 0 12px rgba(200,164,74,.3)}
+
+/* Folder grid */
+.f-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.f-card{background:var(--panel);border:1px solid var(--bdr);border-radius:6px;
+  padding:16px 18px;text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;gap:8px;
+  position:relative;overflow:hidden;
+  transition:border-color .2s,transform .15s,box-shadow .2s}
+.f-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.4)}
+.f-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;transition:opacity .2s}
+.f-card-b::before{background:var(--blue2)} .f-card-g::before{background:var(--gold)}
+.f-card-t::before{background:var(--teal)} .f-card-p::before{background:var(--purp2)}
+.f-card-b:hover{border-color:rgba(74,128,208,.5)}
+.f-card-g:hover{border-color:rgba(200,164,74,.5)}
+.f-card-t:hover{border-color:rgba(58,184,192,.5)}
+.f-card-p:hover{border-color:rgba(136,80,208,.5)}
+.f-path{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  word-break:break-all}
+.f-card-b .f-path{color:var(--blue2)} .f-card-g .f-path{color:var(--gold)}
+.f-card-t .f-path{color:var(--teal)}  .f-card-p .f-path{color:var(--purp2)}
+.f-badge{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;
+  text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid;
+  align-self:flex-start}
+.f-card-b .f-badge{color:var(--blue2);border-color:rgba(74,128,208,.4);background:rgba(74,128,208,.07)}
+.f-card-g .f-badge{color:var(--gold);border-color:rgba(200,164,74,.4);background:rgba(200,164,74,.07)}
+.f-card-t .f-badge{color:var(--teal);border-color:rgba(58,184,192,.4);background:rgba(58,184,192,.07)}
+.f-card-p .f-badge{color:var(--purp2);border-color:rgba(136,80,208,.4);background:rgba(136,80,208,.07)}
+.f-desc{font-size:12px;color:var(--txt2);line-height:1.6}
+.f-url{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txt3);
+  word-break:break-all;margin-top:auto}
+.f-arr{font-size:13px;color:var(--txt3);align-self:flex-end;
+  transition:transform .2s,color .2s}
+.f-card:hover .f-arr{transform:translateX(4px);color:var(--blue2)}
+
+/* ── FILE SCANNER ── */
+.scanner-box{margin-top:28px;background:var(--surf);border:1px solid var(--bdr);
+  border-radius:6px;overflow:hidden}
+.scanner-hdr{display:flex;align-items:center;gap:10px;
+  padding:10px 16px;border-bottom:1px solid var(--bdr);
+  background:rgba(0,0,0,.3)}
+.scanner-title{font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:2px;text-transform:uppercase;color:var(--txt2)}
+.scan-btn{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;padding:4px 12px;border-radius:2px;
+  background:rgba(74,128,208,.15);border:1px solid rgba(74,128,208,.4);
+  color:var(--blue2);cursor:pointer;transition:all .2s;margin-left:auto}
+.scan-btn:hover{background:rgba(74,128,208,.25);box-shadow:0 0 10px rgba(74,128,208,.3)}
+.scan-status{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--teal);
+  margin-left:8px}
+.file-list{padding:12px 16px;max-height:300px;overflow-y:auto}
+.file-item{display:flex;align-items:center;gap:10px;
+  padding:6px 8px;border-radius:3px;transition:background .15s;
+  font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer}
+.file-item:hover{background:rgba(74,128,208,.08)}
+.fi-icon{font-size:13px;flex-shrink:0}
+.fi-name{color:var(--txt);flex:1;word-break:break-all}
+.fi-size{color:var(--txt3);font-size:10px;white-space:nowrap}
+.fi-type-pdf .fi-name{color:var(--gold)}
+.fi-type-html .fi-name{color:var(--blue2)}
+.fi-type-c .fi-name,.fi-type-h .fi-name{color:var(--teal)}
+.fi-type-md .fi-name{color:var(--purp2)}
+.fi-open{font-size:9px;color:var(--txt3);padding:2px 6px;
+  border:1px solid var(--bdr);border-radius:2px;transition:all .15s;
+  text-decoration:none;white-space:nowrap}
+.fi-open:hover{border-color:var(--blue2);color:var(--blue2)}
+.scan-empty{font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--txt3);padding:16px;text-align:center}
+
+/* ════════════════════════════════════════════
+   PAPERS SECTION
+════════════════════════════════════════════ */
+.papers-grid{display:grid;gap:14px}
+.pc{background:var(--panel);border:1px solid var(--bdr);border-radius:6px;
+  padding:20px 24px;display:grid;grid-template-columns:48px 1fr auto;
+  gap:16px;align-items:start;position:relative;overflow:hidden;
+  cursor:pointer;transition:border-color .2s,transform .15s,box-shadow .2s}
+.pc:hover{transform:translateY(-2px);box-shadow:0 6px 30px rgba(0,0,0,.4)}
+/* flash scan on hover */
+@keyframes pcscan{0%{left:-60%;opacity:0}10%{opacity:1}90%{opacity:.5}100%{left:110%;opacity:0}}
+.pc::after{content:'';position:absolute;top:0;left:-60%;width:50%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.04) 50%,transparent);
+  pointer-events:none;opacity:0}
+.pc:hover::after{animation:pcscan .6s ease forwards}
+.pc-num{font-family:'EB Garamond',serif;font-size:32px;font-weight:700;
+  color:var(--txt3);line-height:1;padding-top:4px}
+.pc-body{min-width:0}
+.pc-title{font-family:'EB Garamond',serif;font-size:18px;font-weight:700;
+  color:var(--txt);line-height:1.3;margin-bottom:4px}
+.pc-ja{font-family:'Noto Serif JP',serif;font-size:12px;color:var(--txt2);
+  margin-bottom:10px;display:block}
+.pc-desc{font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:12px}
+.pc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.pt{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;
+  text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid}
+.pt-g{color:var(--gold);border-color:rgba(200,164,74,.35)}
+.pt-b{color:var(--blue2);border-color:rgba(74,128,208,.35)}
+.pt-t{color:var(--teal);border-color:rgba(58,184,192,.35)}
+.pt-p{color:var(--purp2);border-color:rgba(136,80,208,.35)}
+.pc-links{display:flex;gap:7px;flex-wrap:wrap}
+.plink{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;text-decoration:none;padding:5px 12px;border-radius:3px;
+  border:1px solid;transition:all .2s;position:relative;overflow:hidden}
+.plink::before{content:'';position:absolute;inset:0;background:currentColor;
+  opacity:0;transition:opacity .2s}
+.plink:hover::before{opacity:.08}
+.plink:hover{box-shadow:0 0 14px currentColor;letter-spacing:2px}
+.pl-g{color:var(--gold);border-color:rgba(200,164,74,.4)}
+.pl-b{color:var(--blue2);border-color:rgba(74,128,208,.4)}
+.pl-t{color:var(--teal);border-color:rgba(58,184,192,.4)}
+.pc-arr{font-size:22px;color:var(--txt3);padding-top:8px;transition:all .2s}
+.pc:hover .pc-arr{color:var(--gold);transform:translateX(4px)}
+
+/* ── INLINE PDF VIEWER ── */
+.pdf-viewer{display:none;margin-top:14px;border-radius:4px;overflow:hidden;
+  border:1px solid var(--bdr2);background:var(--deep)}
+.pdf-viewer.open{display:block}
+.pv-bar{display:flex;align-items:center;gap:10px;
+  padding:8px 14px;background:rgba(0,0,0,.5);border-bottom:1px solid var(--bdr)}
+.pv-fname{font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--gold);flex:1}
+.pv-links{display:flex;gap:8px}
+.pv-a{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;
+  text-decoration:none;padding:3px 9px;border-radius:2px;
+  border:1px solid;transition:all .2s}
+.pv-a-b{color:var(--blue2);border-color:rgba(74,128,208,.4)}
+.pv-a-b:hover{background:rgba(74,128,208,.15);box-shadow:0 0 8px rgba(74,128,208,.3)}
+.pv-close{font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--txt3);cursor:pointer;padding:3px 9px;
+  border:1px solid var(--bdr);border-radius:2px;transition:all .15s}
+.pv-close:hover{border-color:var(--rose);color:var(--rose)}
+.pdf-frame{width:100%;height:600px;border:0;background:#fff}
+
+/* ════════════════════════════════════════════
+   PROJECTS SECTION
+════════════════════════════════════════════ */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pj{background:var(--panel);border:1px solid var(--bdr);border-radius:6px;
+  padding:22px;position:relative;overflow:hidden;
+  transition:border-color .2s,transform .15s}
+.pj::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  opacity:0;transition:opacity .3s}
+.pj:hover::after{opacity:1}
+.pj:hover{transform:translateY(-2px)}
+/* color variants */
+.pj-b::after{background:linear-gradient(90deg,transparent,var(--blue2),transparent)}
+.pj-b:hover{border-color:rgba(74,128,208,.4);box-shadow:0 4px 24px rgba(74,128,208,.08)}
+.pj-g::after{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.pj-g:hover{border-color:rgba(200,164,74,.4)}
+.pj-t::after{background:linear-gradient(90deg,transparent,var(--teal),transparent)}
+.pj-t:hover{border-color:rgba(58,184,192,.4)}
+.pj-p::after{background:linear-gradient(90deg,transparent,var(--purp2),transparent)}
+.pj-p:hover{border-color:rgba(136,80,208,.4)}
+.pj-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.pj-ico{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-size:16px}
+.pj-lang{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;
+  text-transform:uppercase;padding:2px 8px;border-radius:2px;
+  border:1px solid;margin-left:auto}
+.pj-b .pj-lang{color:var(--blue2);border-color:rgba(74,128,208,.35)}
+.pj-g .pj-lang{color:var(--gold);border-color:rgba(200,164,74,.35)}
+.pj-t .pj-lang{color:var(--teal);border-color:rgba(58,184,192,.35)}
+.pj-p .pj-lang{color:var(--purp2);border-color:rgba(136,80,208,.35)}
+.pj-title{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;
+  color:var(--txt);margin-bottom:4px}
+.pj-sub{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
+.pj-desc{font-size:13px;color:var(--txt2);line-height:1.7;margin-bottom:14px}
+.pj-srcs{display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;
+  border-top:1px solid var(--bdr)}
+.ps{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.8px;
+  text-decoration:none;padding:3px 8px;border-radius:2px;
+  border:1px solid var(--bdr);color:var(--txt2);
+  transition:all .18s;display:inline-flex;align-items:center;gap:3px}
+.ps:hover{border-color:var(--blue2);color:var(--blue2);
+  background:rgba(74,128,208,.07);box-shadow:0 0 8px rgba(74,128,208,.2)}
+.ps-g:hover{border-color:var(--gold);color:var(--gold);
+  background:rgba(200,164,74,.07);box-shadow:0 0 8px rgba(200,164,74,.2)}
+.ps-t:hover{border-color:var(--teal);color:var(--teal);
+  background:rgba(58,184,192,.07);box-shadow:0 0 8px rgba(58,184,192,.2)}
+.ps-p:hover{border-color:var(--purp2);color:var(--purp2);
+  background:rgba(136,80,208,.07);box-shadow:0 0 8px rgba(136,80,208,.2)}
+
+/* ════════════════════════════════════════════
+   EQUATIONS SHOWCASE
+════════════════════════════════════════════ */
+.eq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.eq-c{background:var(--surf);border:1px solid var(--bdr);border-radius:6px;
+  padding:18px 20px;position:relative;overflow:hidden}
+.eq-src{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--txt3);margin-bottom:6px}
+.eq-nm{font-family:'Noto Serif JP',serif;font-size:13px;color:var(--txt2);
+  margin-bottom:10px}
+.eq-math{font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--blue2);line-height:1.9;padding:10px 12px;
+  background:rgba(0,0,0,.4);border-radius:3px}
+.eq-math.gm{color:var(--gold)} .eq-math.tm{color:var(--teal)}
+
+/* ── TIMELINE ── */
+.tl{display:flex;flex-direction:column;gap:0;position:relative;padding-left:36px}
+.tl::before{content:'';position:absolute;left:9px;top:8px;bottom:8px;
+  width:1px;background:linear-gradient(180deg,transparent,var(--blue),var(--teal),transparent)}
+.tli{position:relative;padding:0 0 36px 28px}
+.tli::before{content:'';position:absolute;left:-27px;top:6px;
+  width:10px;height:10px;border-radius:50%;border:2px solid var(--blue);
+  background:var(--deep);transition:border-color .3s}
+.tli:hover::before{border-color:var(--gold);background:var(--gold);
+  box-shadow:0 0 12px var(--gold)}
+.tl-yr{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;
+  color:var(--txt3);text-transform:uppercase;margin-bottom:6px}
+.tl-t{font-family:'EB Garamond',serif;font-size:18px;font-weight:700;
+  color:var(--txt);margin-bottom:6px}
+.tl-d{font-size:14px;color:var(--txt2);line-height:1.8}
+
+/* ── CONTACT ── */
+#contact{padding:80px 0 40px}
+.ct-in{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.ct-eq{background:var(--panel);border:1px solid var(--bdr);border-radius:6px;
+  padding:20px 24px;margin-top:24px}
+.ct-eq-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
+.ct-eq-text{font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--blue2);line-height:2.1}
+.ct-links{display:flex;flex-direction:column;gap:10px}
+.cla{display:flex;align-items:center;gap:14px;padding:14px 18px;
+  background:var(--panel);border:1px solid var(--bdr);border-radius:6px;
+  text-decoration:none;color:inherit;transition:all .2s}
+.cla:hover{border-color:var(--bdr2);transform:translateX(4px);
+  background:rgba(74,128,208,.04)}
+.cla-ico{width:40px;height:40px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;font-size:18px;flex-shrink:0}
+.cla-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  color:var(--txt);letter-spacing:.5px}
+.cla-val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3)}
+.cla-arr{margin-left:auto;color:var(--txt3);transition:transform .2s}
+.cla:hover .cla-arr{transform:translateX(4px);color:var(--blue2)}
+
+/* ── FOOTER ── */
+.ftr{border-top:1px solid var(--bdr);padding:28px 0;text-align:center;
+  position:relative;z-index:2}
+.ftr-eq{font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--txt3);letter-spacing:.5px;margin-bottom:10px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 20px}
+.ftr-cp{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txt3);
+  letter-spacing:1.5px;text-transform:uppercase}
+
+/* ── REVEAL ANIMATION ── */
+@keyframes revU{from{opacity:0;transform:translateY(28px) scale(.98)}to{opacity:1;transform:none}}
+.rev{opacity:0}
+.rev.in{animation:revU .65s cubic-bezier(.22,1,.36,1) both}
+.rev.in:nth-child(1){animation-delay:.05s}.rev.in:nth-child(2){animation-delay:.1s}
+.rev.in:nth-child(3){animation-delay:.15s}.rev.in:nth-child(4){animation-delay:.2s}
+.rev.in:nth-child(5){animation-delay:.25s}.rev.in:nth-child(6){animation-delay:.3s}
+
+/* ── GLITCH ── */
+@keyframes gl1{0%,100%{clip-path:inset(0 0 96% 0);transform:translate(-2px,0)}
+ 25%{clip-path:inset(40% 0 40% 0);transform:translate(2px,0)}
+ 50%{clip-path:inset(70% 0 15% 0);transform:translate(-1px,0)}
+ 75%{clip-path:inset(15% 0 70% 0);transform:translate(1px,0)}}
+@keyframes gl2{0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(2px,0);color:var(--teal)}
+ 30%{clip-path:inset(20% 0 65% 0);transform:translate(-2px,0)}
+ 70%{clip-path:inset(80% 0  5% 0);transform:translate(1px,0);color:var(--gold)}}
+.glitch{position:relative}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;
+  font:inherit;pointer-events:none}
+.glitch::before{color:var(--teal);animation:gl1 5s steps(1) infinite;opacity:.5}
+.glitch::after{color:var(--gold);animation:gl2 5s steps(1) .8s infinite;opacity:.5}
+
+/* ── NEON PULSE BADGE ── */
+@keyframes npulse{0%,100%{box-shadow:0 0 4px currentColor}50%{box-shadow:0 0 16px currentColor,0 0 32px currentColor}}
+.live-badge{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;
+  color:var(--teal);border:1px solid rgba(58,184,192,.5);
+  animation:npulse 2.5s ease-in-out infinite}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero-in,.ct-in{grid-template-columns:1fr}
+  .h-eq{display:none}
+  .fw-grid{grid-template-columns:repeat(2,1fr)}
+  .proj-grid{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .eq-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .con{padding:0 20px}
+  nav{padding:0 20px}
+  .nls{display:none}
+  .fw-grid,.proj-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .f-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="spb"></div>
+<canvas id="bg"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a class="nl" href="#hero">MY<span>/</span>GDM</a>
+  <div class="nls">
+    <a class="na" href="#about">理論</a>
+    <a class="na" href="#papers">論文</a>
+    <a class="na" href="#repos">リポジトリ</a>
+    <a class="na" href="#projects">プロジェクト</a>
+    <a class="na" href="#equations">方程式</a>
+    <a class="na" href="#contact">連絡</a>
+  </div>
+  <a class="ngh" href="https://github.com/masaaki-avnturle" target="_blank">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    GitHub
+  </a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-in">
+    <div>
+      <div class="h-eyb">Global Differential Manifold Research</div>
+      <h1 class="h-name glitch" data-text="Masaaki Yamaguchi">Masaaki<br>Yamaguchi</h1>
+      <span class="h-namej">山口 雅旭</span>
+      <p class="h-desc">大域的微分多様体とジョーンズ多項式の統一理論を研究し、ガンマ函数・ベータ函数・ゼータ函数・シャノンエントロピーの相互等価性をプログラミング言語とAI設計へ応用する独立研究者・開発者。</p>
+      <div class="h-tags">
+        <span class="ht ht-b">Jones Polynomial</span>
+        <span class="ht ht-g">Gamma · Beta · Zeta</span>
+        <span class="ht ht-t">Shannon Entropy</span>
+        <span class="ht ht-p">Bada Language</span>
+        <span class="ht ht-b">TupleSpace AI</span>
+        <span class="ht ht-g">Akashic Record</span>
+        <span class="ht ht-t">AdS5 Manifold</span>
+        <span class="ht ht-p">Calabi–Yau</span>
+      </div>
+      <div class="h-btns">
+        <a class="btn-p" href="#papers">論文を読む</a>
+        <a class="btn-o" href="#repos">リポジトリ</a>
+        <a class="btn-o" href="#projects">プロジェクト</a>
+      </div>
+    </div>
+    <div class="h-eq">
+      <div class="eq-l g">β(p,q) = Γ(p)Γ(q) / Γ(p+q) = 2∫|sin2x|²dτ</div>
+      <div class="eq-l">d/df F = ∬ 1/(x log x)² dx_m + ∬ 1/(y log y)^½ dy_m</div>
+      <div class="eq-l t">ζ(s) = β(p,q) / log x = x log x</div>
+      <div class="eq-l">⊕(iℏ∇)^⊕L = ∫e⁻ˣx^{1-t}dx_m = e^{-x log x}</div>
+      <div class="eq-l p">π(χ,x) = [iπ(χ,x), f(x)]</div>
+      <div class="eq-l g">‖ds²‖ = e^{-2πT|ψ|}[η_μν+h̄(x)]dx^μdx^ν + T²d²ψ</div>
+      <div class="eq-l t">□ = 2(sin(ix log x) + cos(ix log x))</div>
+      <div class="eq-l">d/dt g_{ij}(t) = −2R_{ij}  ← Ricci flow</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="si"><span class="sn" data-target="16">0</span><div class="sk">Research Files</div></div>
+  <div class="si"><span class="sn" data-target="54">0</span><div class="sk">Core Equations</div></div>
+  <div class="si"><span class="sn" data-target="9">0</span><div class="sk">Software Projects</div></div>
+  <div class="si"><span class="sn" data-target="∞">0</span><div class="sk">Akashic Records</div></div>
+  <div class="si"><span class="sn" data-target="1">0</span><div class="sk">Unified Theory</div></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="con">
+    <div class="sl">理論体系</div>
+    <h2>山口フレームワーク<br><em>Yamaguchi Framework</em></h2>
+    <p class="sub">大域的微分多様体を核として、数学・物理学・情報科学・人工知能を単一の方程式系で統一する独自理論。ジョーンズ多項式・サーストン分類・ペレルマン多様体を出発点に、LLMアーキテクチャとの同型性を導く。</p>
+    <div class="fw-grid">
+      <div class="fw-c cb rev"><span class="fw-ico">∇</span><div class="fw-t">大域的微分多様体</div><div class="fw-eq">d/df F = ∬1/(x log x)² dx_m<br>+ ∬1/(y log y)^½ dy_m = Γ(x,y)</div><div class="fw-d">全方程式の根幹をなす大域的微分作用素。ガンマ函数・ベータ函数・ゼータ函数を単一の多様体積分へ統一。</div></div>
+      <div class="fw-c cg rev"><span class="fw-ico">β</span><div class="fw-t">ガンマ・ベータ函数系</div><div class="fw-eq">β(p,q) = Γ(p)Γ(q)/Γ(p+q)<br>ζ(s) = β(p,q)/log x</div><div class="fw-d">ベータ・ガンマ・ゼータ三位一体。シャノンエントロピー x log x を核として全てが等価であることを証明。宇宙と人体のDNA。</div></div>
+      <div class="fw-c ct rev"><span class="fw-ico">π</span><div class="fw-t">非可換作用素 π(χ,x)</div><div class="fw-eq">π(χ,x) = [iπ(χ,x), f(x)]<br>iπ∘f ≠ f∘π</div><div class="fw-d">シャノンエントロピーとコルモゴロフエントロピーの非可換性。ハイゼンベルク交換子と同型。重力・反重力方程式を生成。</div></div>
+      <div class="fw-c cp rev"><span class="fw-ico">⊕</span><div class="fw-t">量子作用素 ⊕(iℏ∇)^⊕L</div><div class="fw-eq">HΨ = ⊕(iℏ∇)^⊕L = e^{-x log x}<br>= ∫e⁻ˣx^{1-t}dx_m</div><div class="fw-d">ハミルトニアンHΨをガンマ函数積分と同型と見なす核心式。LLM注意機構のℏ_effスケーリングの根拠。</div></div>
+      <div class="fw-c cb rev"><span class="fw-ico">Ω</span><div class="fw-t">TupleSpace · アカシックレコード</div><div class="fw-eq">Ω::DATABASE[tuplespace]<br>⊃ Z ⊃ C ⊕ ∇R⁺</div><div class="fw-d">多様体をデータベース化した不変知識空間。アカシックレコードを実装し認知システムの永続的基盤とする。Bada言語の理論的基礎。</div></div>
+      <div class="fw-c cg rev"><span class="fw-ico">𝒥</span><div class="fw-t">ジョーンズ多様体・結び目理論</div><div class="fw-eq">‖ds²‖ = ‖x^½ log x‖⁴ = ζ(s)<br>ζ=(at-tⁿ+a)=eᶠ</div><div class="fw-d">ジョーンズ多項式をGoFデザインパターンクラスの結び目と同型と見なす。LLMアーキテクチャの位相的構造を導出。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAPERS -->
+<section id="papers">
+  <div class="con">
+    <div class="sl">研究レポート</div>
+    <h2>論文・<em>Research Files</em></h2>
+    <p class="sub">GitHubリポジトリに収録されている全研究ファイル。各カードをクリックするとPDFをインライン表示します。</p>
+    <div class="papers-grid" id="papers-grid">
+    <!-- paper cards injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- REPOSITORIES + FILE SCANNER -->
+<section id="repos">
+  <div class="con">
+    <div class="sl">コードアーカイブ</div>
+    <h2>Repository <em>Structure</em></h2>
+    <p class="sub">2つのリポジトリのフォルダ構成。「スキャン」ボタンでGitHub APIからリアルタイムにファイルを取得・表示します。</p>
+    <div class="repo-wrap" id="repo-wrap">
+    <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="con">
+    <div class="sl">実装</div>
+    <h2>Software <em>Projects</em></h2>
+    <p class="sub">山口フレームワークをプログラミング言語・OSシミュレータ・LLMエンジン・アプリとして実装したソフトウェア群。</p>
+    <div class="proj-grid" id="proj-grid">
+    <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- EQUATIONS -->
+<section id="equations">
+  <div class="con">
+    <div class="sl">核心方程式</div>
+    <h2>方程式<em>ショーケース</em></h2>
+    <p class="sub">山口フレームワークの骨格をなす主要方程式。</p>
+    <div class="eq-grid">
+      <div class="eq-c rev"><div class="eq-src">caostics.pdf — 大域的微分多様体基本式</div><div class="eq-nm">大域的微分 = ガンマ函数</div><div class="eq-math">d/df F(x,y) = ∬1/(x log x)² dx_m<br>         + ∬1/(y log y)^½ dy_m = Γ(x,y)</div></div>
+      <div class="eq-c rev"><div class="eq-src">20250205.pdf — DNA方程式</div><div class="eq-nm">ゼータ函数 = シャノン公式</div><div class="eq-math gm">ζ(s) = β(p,q)/log x = x log x<br>‖ds²‖ = ‖x^½ log x‖⁴ = x^{-½}</div></div>
+      <div class="eq-c rev"><div class="eq-src">jum.pdf — 非可換・オイラー積</div><div class="eq-nm">非可換作用素定義</div><div class="eq-math tm">π(χ,x) = [iπ(χ,x), f(x)]<br>iπ∘f(x) ≠ f∘π — Heisenberg同型</div></div>
+      <div class="eq-c rev"><div class="eq-src">esterate.pdf — 量子化</div><div class="eq-nm">量子作用素 = ガンマ函数積分</div><div class="eq-math">⊕(iℏ∇)^⊕L = ∫e⁻ˣx^{1-t}dx_m<br>             = e^{-x log x} = m(x)</div></div>
+      <div class="eq-c rev"><div class="eq-src">Kalabi-Yau.pdf — M理論・AdS5</div><div class="eq-nm">AdS5計量 + D-ブレーン</div><div class="eq-math gm">‖ds²‖ = e^{-2πT|ψ|}[η_μν+h̄(x)]dx^μdx^ν<br>       + T²d²ψ + ∫D²ψ⊗hν dτ</div></div>
+      <div class="eq-c rev"><div class="eq-src">Bada__1.pdf — TupleSpace / Akashic</div><div class="eq-nm">オイラー定数 = アカシックレコード</div><div class="eq-math tm">x^{½+iy} = e^{x log x} = C (Euler const)<br>Ω::DATABASE ⊃ Z ⊃ C ⊕ ∇R⁺</div></div>
+      <div class="eq-c rev"><div class="eq-src">dalia.pdf — Magic演算子</div><div class="eq-nm">T テンソル + ログ不等式</div><div class="eq-math">T^{≪(p,q)}, ▷◁ = β(p,q)/log x<br>log(x log x) ≥ 2(y log y)^½</div></div>
+      <div class="eq-c rev"><div class="eq-src">jum.pdf — Dalanversian 反重力</div><div class="eq-nm">□演算子 = 反重力方程式</div><div class="eq-math gm">□ = 2(sin(ix log x) + cos(ix log x))<br>□ = −16πG/c⁴·T^μν</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="con">
+    <div class="sl">研究軌跡</div>
+    <h2>Research <em>Timeline</em></h2>
+    <div class="tl">
+      <div class="tli rev"><div class="tl-yr">1998</div><div class="tl-t">富山大学入学試験との出会い</div><div class="tl-d">対数函数・ベータ函数グラフ・非線形微分方程式の融合問題が大域的微分多様体理論の萌芽となる。ゼータ函数との同型を直観する。</div></div>
+      <div class="tli rev"><div class="tl-yr">2010s</div><div class="tl-t">フレームワーク体系化</div><div class="tl-d">π(χ,x)非可換作用素・x log xエントロピー核・β(p,q)函数系を核とする独自理論を構築。広中平祐定理・ペレルマン多様体を参照しながら精緻化。</div></div>
+      <div class="tli rev"><div class="tl-yr">2020s</div><div class="tl-t">論文群の整備 + ソフトウェア実装開始</div><div class="tl-d">caostics.pdf・jum.pdf・Bada__1.pdf 等の理論文書を整備。TupleSpace/Omega::DATABASEをBada言語として実装開始。</div></div>
+      <div class="tli rev"><div class="tl-yr">2025.01</div><div class="tl-t">Bada Language v1–v3 + BadaOS 完成</div><div class="tl-d">C言語による完全なOOP言語Bada（4000+行）とUbuntu互換OSシミュレータBadaOSを完成。仮想FS・スケジューラ・aptマネージャを実装。</div></div>
+      <div class="tli rev"><div class="tl-yr">2025.03</div><div class="tl-t">Jones-NN / Silent Talk / Go·将棋AI 完成</div><div class="tl-d">GoFデザインパターン×ジョーンズ多項式によるLLMアプリ群、サブボーカライゼーション認識、量子多様体囲碁・将棋AIを相次いで完成。</div></div>
+      <div class="tli rev"><div class="tl-yr"><span class="live-badge">LIVE</span> 2025</div><div class="tl-t">GitHub公開 · tuplenetwork · Bada リポジトリ</div><div class="tl-d">全論文PDF・ソースコード・ポートフォリオサイトをGitHub Pagesで完全公開。フレームワークの統一理論を継続的に更新中。</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="con">
+    <div class="sl">連絡先</div>
+    <h2>Contact &amp; <em>Links</em></h2>
+    <div class="ct-in">
+      <div>
+        <p style="font-size:15px;color:var(--txt2);line-height:1.9;margin-bottom:20px">山口フレームワークは現在も進化中です。数学・物理学・コンピュータサイエンスの研究者、またはフレームワークの実装に興味のある開発者からのご連絡をお待ちしています。</p>
+        <div class="ct-eq">
+          <div class="ct-eq-label">核心方程式</div>
+          <div class="ct-eq-text">ζ(s) = β(p,q)/log x = x log x<br>π(χ,x) = [iπ(χ,x), f(x)]<br>⊕(iℏ∇)^⊕L = e^{-x log x}<br>Ω::DATABASE ↔ ∞ ← Akashic</div>
+        </div>
+      </div>
+      <div class="ct-links">
+        <a class="cla" href="https://github.com/masaaki-avnturle" target="_blank">
+          <div class="cla-ico" style="background:rgba(255,255,255,.07)"><svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></div>
+          <div><div class="cla-lbl">GitHub</div><div class="cla-val">github.com/masaaki-avnturle</div></div>
+          <span class="cla-arr">→</span>
+        </a>
+        <a class="cla" href="https://github.com/masaaki-avnturle/tuplenetwork" target="_blank">
+          <div class="cla-ico" style="background:rgba(74,128,208,.1)">🌐</div>
+          <div><div class="cla-lbl">tuplenetwork</div><div class="cla-val">論文PDF · ポートフォリオ · TupleSpace</div></div>
+          <span class="cla-arr">→</span>
+        </a>
+        <a class="cla" href="https://github.com/masaaki-avnturle/Bada" target="_blank">
+          <div class="cla-ico" style="background:rgba(200,164,74,.1)">🔤</div>
+          <div><div class="cla-lbl">Bada</div><div class="cla-val">Bada言語 · BadaOS · omega_llm</div></div>
+          <span class="cla-arr">→</span>
+        </a>
+        <a class="cla" href="#papers">
+          <div class="cla-ico" style="background:rgba(58,184,192,.1)">📄</div>
+          <div><div class="cla-lbl">Research Papers</div><div class="cla-val">16 論文 · PDF形式で公開中</div></div>
+          <span class="cla-arr">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ftr">
+  <div class="ftr-eq">d/df F(x,y) = ∬1/(x log x)² dx_m + ∬1/(y log y)^½ dy_m = Γ(x,y) · ζ(s) = β(p,q)/log x · ⊕(iℏ∇)^⊕L = e^{-x log x}</div>
+  <div class="ftr-cp">© 2025 Masaaki Yamaguchi · 山口 雅旭 · Global Differential Manifold Research</div>
+</div>
+
+<script>
+'use strict';
+/* ════════════════════════════════════════════
+   DATA — Papers
+════════════════════════════════════════════ */
+const GH_RAW = 'https://raw.githubusercontent.com/masaaki-avnturle';
+const GH_PAGES = 'https://masaaki-avnturle.github.io';
+const GH_REPO = 'https://github.com/masaaki-avnturle';
+
+const PAPERS = [
+  { n:'01', title:'Beta Function Reveal with Global Differential Manifold',
+    ja:'ベータ函数と大域的微分多様体の解明',
+    desc:'ガンマ函数・ベータ函数・ゼータ函数の相互等価性を大域的微分多様体から導く。超円関数・ジョーンズ多様体・ヒッグス場との接続を示す核心論文。',
+    tags:[['β函数','g'],['Γ函数','b'],['Jones多様体','t'],['量子力学','p']],
+    pdf:'caostics.pdf', folder:'pdf/pdf',
+    accent:'var(--gold)' },
+  { n:'02', title:'DNA of Universe and Human Being with Zeta Function',
+    ja:'宇宙と人体のDNA — ゼータ函数による入口',
+    desc:'ゼータ函数がシャノン公式であることを証明し、一般相対性理論の多様体積分が宇宙のDNA・ゼータ函数が人体のDNAであることを示す。1998年富山大学入試問題との接続。',
+    tags:[['ζ函数','t'],['Shannon公式','g'],['一般相対性','b'],['ペレルマン','p']],
+    pdf:'20250205.pdf', folder:'pdf/pdf',
+    accent:'var(--teal)' },
+  { n:'03', title:'Euler Product from Heisenberg Non-commutative',
+    ja:'ハイゼンベルク非可換方程式からのオイラー積',
+    desc:'ネイピア数ステップ関数・ダランベルシアン・反重力方程式を通じてオイラー積が非可換構造から導出されることを示す。π(χ,x)作用素の完全な記述を含む。',
+    tags:[['非可換代数','b'],['Dalanversian','t'],['反重力','g']],
+    pdf:'jum.pdf', folder:'pdf/pdf',
+    accent:'var(--blue)' },
+  { n:'04', title:'Artificial Intelligence and TupleSpace of Ultranetwork',
+    ja:'人工知能とウルトラネットワークのTupleSpace',
+    desc:'Omega::DATABASEをアカシックレコードとして実装する独自プログラミング言語仕様。作用素環プログラミング・半静性型宣言子・多様体のコード化を詳述。Bada言語の理論的基盤。',
+    tags:[['TupleSpace','p'],['作用素環','b'],['Bada言語','g'],['AI設計','t']],
+    pdf:'Bada__1.pdf', folder:'pdf/pdf',
+    accent:'var(--purp)' },
+  { n:'05', title:'Library of Akashic Record',
+    ja:'アカシックレコードの図書館',
+    desc:'カラビ・ヤウ多様体・D-ブレーン・コホモロジーを含む包括的多様体理論。開積分の基本群的重力・ジョーンズ多様体・ゼータ函数の結び目理論的解釈を展開。',
+    tags:[['Akashic Record','g'],['D-ブレーン','b'],['コホモロジー','t']],
+    pdf:'akashic.pdf', folder:'altmistypdf',
+    accent:'var(--gold)' },
+  { n:'06', title:'M Theory Equal with AdS5 Manifold',
+    ja:'M理論とAdS5多様体 — Γ→β函数',
+    desc:'カラビ・ヤウ多様体のオイラー数がホッジ数を経てガンマ函数となり、ジョーンズ多項式・鏡映理論・ホッジ予想の解決へと至ることを示す。AdS5多様体とヒッグス場の統一的記述。',
+    tags:[['AdS5','t'],['Calabi–Yau','g'],['Hodge予想','b'],['M理論','p']],
+    pdf:'Kalabi-Yau.pdf', folder:'pdf/pdf',
+    accent:'var(--teal)' },
+  { n:'07', title:'Secureproduct from Differential Manifold of Quantum Level',
+    ja:'量子レベル微分多様体からのSecureproduct',
+    desc:'虚数極の回転が1つの行列要素として出現することを示す。∇⁺演算子・重力場理論・アカシックレコードとしての大域的微分多様体を結合。ヴェイユ予想との接続。',
+    tags:[['Secureproduct','b'],['虚数極','t'],['Weil予想','g']],
+    pdf:'matrix_reloaded.pdf', folder:'exceedpdf',
+    accent:'var(--blue)' },
+  { n:'08', title:'Magic Operate with Dalia Function System',
+    ja:'ダリア函数システムによるMagic演算子',
+    desc:'TテンソルとTimebow方程式をベータ函数から導出。D²ψ⊗hνのD-ブレーン解釈・ノルム空間の積分方程式・log(x log x) ≥ 2(y log y)^½ の不等式を含む。',
+    tags:[['Magic演算子','p'],['Timebow方程式','b'],['D-ブレーン','t']],
+    pdf:'dalia.pdf', folder:'pdf/pdf',
+    accent:'var(--purp)' },
+  { n:'09', title:'M Dimension from Catastrophe Theory',
+    ja:'カタストロフィ理論によるM次元多様体',
+    desc:'空間的観念論からM次元多様体を構築するカタストロフィ理論。ノルム公式が大域的微分方程式と結び目理論を含むことを示し、宇宙と他次元の関係を記述。',
+    tags:[['カタストロフィ','g'],['M次元','b'],['結び目理論','t']],
+    pdf:'catastrophe.pdf', folder:'exceedpdf',
+    accent:'var(--gold)' },
+  { n:'10', title:'微分幾何の量子化による大域的切断多様体',
+    ja:'Differential Geometry Quantization',
+    desc:'コホモロジーの同値類がヘルマンダー作用素であることを示し、N階層指数定理・ブラウン運動・確率論・ヴェイユ予想ゼータ函数を統合。量子力学のガウス曲面論を解明。',
+    tags:[['コホモロジー','t'],['量子化','g'],['Hörmander作用素','b']],
+    pdf:'esterate.pdf', folder:'pdf/pdf',
+    accent:'var(--teal)' },
+  { n:'11', title:'Amino Medicine Architect',
+    ja:'アミノ医薬設計',
+    desc:'20種アミノ酸と有機化学反応を数学的フレームワークで記述。セサミン・ドーパミン・脳内グリア細胞・eGFR機能との関連を化学構造式と推算式で展開。',
+    tags:[['有機化学','b'],['アミノ酸','g'],['医薬設計','t']],
+    pdf:'amino.pdf', folder:'altmistypdf',
+    accent:'var(--blue)' },
+  { n:'12', title:'Recycle — PVC Decomposition via Sodium Phenoxide',
+    ja:'塩化ビニルのナトリウムフェノキシド分解',
+    desc:'塩化ビニルをナトリウムフェノキシド・ナトリウムプロパノキシドで分解する化学式。プロパン固体化・降圧剤作用の特許技術を含む。',
+    tags:[['リサイクル化学','p'],['PVC分解','b'],['特許技術','g']],
+    pdf:'recycle.pdf', folder:'exceedpdf',
+    accent:'var(--purp)' },
+  { n:'13', title:'Fullnitorazpam Recreated from Amail',
+    ja:'フルニトラゼパムのアメルからの再構成',
+    desc:'フルニトラゼパム（サイレース）とカリウム・カルシウム差分ベクトルによる磁性体生成。アカシックレコード・ベータ函数大域的積分多様体のベクトル方位とガウス曲面論を含む。',
+    tags:[['医薬化学','g'],['磁性体生成','b'],['ベクトル方位','t']],
+    pdf:'fullnitorazpam.pdf', folder:'altmistypdf',
+    accent:'var(--gold)' },
+  { n:'14', title:'Cafe / Journal / Resume',
+    ja:'カフェ論文集 · ジャーナル · 履歴書',
+    desc:'cafe.pdf・jurnarlist.pdf・rejume.pdf の三文書。研究活動の記録・発表履歴・論文投稿先一覧を含む山口フレームワーク全体の研究経歴ドキュメント群。',
+    tags:[['研究記録','t'],['履歴書','b'],['ジャーナル','g']],
+    pdf:'cafe.pdf', folder:'origin',
+    accent:'var(--teal)' },
+];
+
+/* ════════════════════════════════════════════
+   DATA — Repositories
+════════════════════════════════════════════ */
+const REPOS = [
+  { name:'tuplenetwork', icon:'🌐', iconBg:'rgba(74,128,208,.15)',
+    ghUrl:`${GH_REPO}/tuplenetwork`,
+    btnCls:'gh-btn-b',
+    folders:[
+      { path:'main (root)', badge:'ROOT', cls:'f-card-b',
+        url:`${GH_PAGES}/tuplenetwork/`,
+        rawBase:`tuplenetwork/main`,
+        apiPath:'',
+        desc:'ポートフォリオトップ。Framework全体像・統計・方程式ショーケース・GitHub Pagesルート。' },
+      { path:'altmistypdf/', badge:'PDF', cls:'f-card-g',
+        url:`${GH_PAGES}/tuplenetwork/altmistypdf/`,
+        rawBase:`tuplenetwork/main/altmistypdf`,
+        apiPath:'altmistypdf',
+        desc:'Altmisty系論文PDFアーカイブ。大域的微分多様体補完文書群・有機化学論文・医薬化学研究。' },
+      { path:'exceedpdf/', badge:'PDF', cls:'f-card-t',
+        url:`${GH_PAGES}/tuplenetwork/exceedpdf/`,
+        rawBase:`tuplenetwork/main/exceedpdf`,
+        apiPath:'exceedpdf',
+        desc:'Exceed系論文PDFアーカイブ。π(χ,x)非可換・Magic演算子・Dalia函数・カタストロフィ理論。' },
+      { path:'origin/', badge:'SOURCE', cls:'f-card-p',
+        url:`${GH_PAGES}/tuplenetwork/origin/`,
+        rawBase:`tuplenetwork/main/origin`,
+        apiPath:'origin',
+        desc:'フレームワーク原典資料。1998年富山大学入試問題から始まる理論萌芽の原点ドキュメント群。' },
+      { path:'pdf/', badge:'PDF', cls:'f-card-b',
+        url:`${GH_PAGES}/tuplenetwork/pdf/`,
+        rawBase:`tuplenetwork/main/pdf`,
+        apiPath:'pdf',
+        desc:'主要論文PDFアーカイブ。caostics・jum・20250205・Bada__1・Kalabi-Yau等16本の核心論文。' },
+    ]
+  },
+  { name:'Bada', icon:'🔤', iconBg:'rgba(200,164,74,.15)',
+    ghUrl:`${GH_REPO}/Bada`,
+    btnCls:'gh-btn-g',
+    folders:[
+      { path:'main (root)', badge:'ROOT', cls:'f-card-g',
+        url:`${GH_PAGES}/Bada/`,
+        rawBase:`Bada/main`,
+        apiPath:'',
+        desc:'Bada言語トップ。Bada v3ソースコード・BadaOS・TupleSpace全体インデックス。4000+ LOC。' },
+      { path:'Bada++/', badge:'C++', cls:'f-card-t',
+        url:`${GH_PAGES}/Bada/Bada%2B%2B/`,
+        rawBase:`Bada/main/Bada++`,
+        apiPath:'Bada%2B%2B',
+        desc:'Bada言語のC++拡張版。多様体演算子テンプレート・π(χ,x)非可換作用素をC++で再実装。' },
+      { path:'omega/', badge:'LLM', cls:'f-card-p',
+        url:`${GH_PAGES}/Bada/omega/`,
+        rawBase:`Bada/main/omega`,
+        apiPath:'omega',
+        desc:'omega_llm エンジン。π-softmax・ℏ_eff注意・gamma-deprivation activation・Omega::DATABASE。' },
+    ]
+  }
+];
+
+/* ════════════════════════════════════════════
+   DATA — Projects
+════════════════════════════════════════════ */
+const PROJECTS = [
+  { title:'Bada Language', sub:'BADA OOP LANGUAGE v3',
+    ico:'🔤', icoBg:'rgba(74,128,208,.15)', cls:'pj-b', lang:'C',
+    desc:'山口フレームワーク作用素環プログラミングをC言語で実装した独自OOP言語。<- -< >- カスタム演算子・20種のオブジェクト型・TupleSpace/Omega::DATABASEをネイティブ型として実装。4000+ LOC。',
+    srcs:[
+      { lbl:'main/', url:`${GH_PAGES}/Bada/`, cls:'' },
+      { lbl:'GitHub Repo', url:`${GH_REPO}/Bada`, cls:'' },
+      { lbl:'Source Tree', url:`${GH_REPO}/Bada/tree/main`, cls:'ps-g' },
+    ]},
+  { title:'BadaOS', sub:'UBUNTU-COMPATIBLE OS SIMULATOR',
+    ico:'🖥️', icoBg:'rgba(200,164,74,.15)', cls:'pj-g', lang:'C',
+    desc:'Badaランタイム上に構築したUbuntu互換OSシミュレータ。仮想ファイルシステム・プロセススケジューラ・aptスタイルパッケージマネージャ・systemd-lite・インタラクティブシェル完備。4000+ LOC。',
+    srcs:[
+      { lbl:'omega/', url:`${GH_PAGES}/Bada/omega/`, cls:'' },
+      { lbl:'GitHub', url:`${GH_REPO}/Bada`, cls:'' },
+      { lbl:'Source', url:`${GH_REPO}/Bada/tree/main`, cls:'ps-t' },
+    ]},
+  { title:'omega_llm', sub:'C-LANGUAGE LLM ENGINE',
+    ico:'🧠', icoBg:'rgba(58,184,192,.15)', cls:'pj-t', lang:'C',
+    desc:'π-softmax・ℏ_eff注意スケーリング・ガンマ剥奪活性化・TupleSpaceメモリをC言語で実装したLLMエンジン。omega_core.h / omega_math.c / omega_tuplespace.c / omega_attention.c / omega_model.c。',
+    srcs:[
+      { lbl:'omega/', url:`${GH_PAGES}/Bada/omega/`, cls:'' },
+      { lbl:'GitHub', url:`${GH_REPO}/Bada/tree/main`, cls:'ps-t' },
+    ]},
+  { title:'Jones-NN LLM Apps', sub:'CHATGPT REINVENTED — JONES POLYNOMIALS',
+    ico:'🔵', icoBg:'rgba(136,80,208,.15)', cls:'pj-p', lang:'HTML/JS',
+    desc:'GoFデザインパターンをジョーンズ多項式結び目ノードとしてモデル化したHTML/JSアプリ群。Claude API統合・パターン別システムプロンプト・ニューラル/結び目可視化を実装。',
+    srcs:[
+      { lbl:'tuplenetwork/', url:`${GH_PAGES}/tuplenetwork/`, cls:'' },
+      { lbl:'pdf/pdf/', url:`${GH_PAGES}/tuplenetwork/pdf/`, cls:'ps-p' },
+      { lbl:'GitHub', url:`${GH_REPO}/tuplenetwork`, cls:'' },
+    ]},
+  { title:'Silent Talk', sub:'SUBVOCALIZATION RECOGNITION APP',
+    ico:'🎙️', icoBg:'rgba(208,64,96,.15)', cls:'pj-b', lang:'HTML/JS',
+    desc:'声帯発話・準発話・サイレント/体内リズムの3モードで動作するサブボーカライゼーション認識インターフェース。ジョーンズ結び目可視化・Shannon/β(p,q)メトリクス・Euler多様体摂動統合。',
+    srcs:[
+      { lbl:'pdf/', url:`${GH_PAGES}/tuplenetwork/pdf/`, cls:'' },
+      { lbl:'GitHub', url:`${GH_REPO}/tuplenetwork/tree/main/pdf`, cls:'ps-g' },
+    ]},
+  { title:'Go & Shogi AI', sub:'QUANTUM-MANIFOLD BOARD GAME AI',
+    ico:'🏁', icoBg:'rgba(74,128,208,.15)', cls:'pj-t', lang:'HTML/JS',
+    desc:'量子多様体着想AIエンジンを搭載した囲碁・将棋ゲーム。x·log x, π(χ,x), □, β(p,q)でゲーム評価論理にマッピングし、陣地スコアリング・駒影響度・手選択温度を実装。',
+    srcs:[
+      { lbl:'origin/', url:`${GH_PAGES}/tuplenetwork/origin/`, cls:'' },
+      { lbl:'GitHub', url:`${GH_REPO}/tuplenetwork/tree/main/origin`, cls:'ps-t' },
+    ]},
+  { title:'TeX 数式清書エディタ', sub:'YAMAGUCHI FRAMEWORK TEX EDITOR',
+    ico:'⚗️', icoBg:'rgba(200,164,74,.15)', cls:'pj-g', lang:'HTML/JS',
+    desc:'全PDFから抽出した150種以上の固有方程式パレット・MathJaxリアルタイムプレビュー・LaTeX論文出力を備えた清書専用エディタ。左パレットのワンクリック挿入対応。',
+    srcs:[
+      { lbl:'altmistypdf/', url:`${GH_PAGES}/tuplenetwork/altmistypdf/`, cls:'' },
+      { lbl:'GitHub', url:`${GH_REPO}/tuplenetwork/tree/main/altmistypdf`, cls:'ps-g' },
+    ]},
+  { title:'有機化学 構造式エディタ', sub:'ORGANIC CHEMISTRY STRUCTURE EDITOR',
+    ico:'🔬', icoBg:'rgba(58,184,192,.15)', cls:'pj-t', lang:'HTML/JS',
+    desc:'手書き感覚で有機分子を描画できるキャンバス型エディタ。chemfig/mhchem TeX出力・SMILES記法生成・30種以上の官能基ライブラリ・SVGエクスポートに対応。',
+    srcs:[
+      { lbl:'exceedpdf/', url:`${GH_PAGES}/tuplenetwork/exceedpdf/`, cls:'' },
+      { lbl:'GitHub', url:`${GH_REPO}/tuplenetwork/tree/main/exceedpdf`, cls:'ps-t' },
+    ]},
+  { title:'Bada Engine (React)', sub:'UNKNOWN PRIOR KNOWLEDGE ENGINE',
+    ico:'🌐', icoBg:'rgba(136,80,208,.15)', cls:'pj-p', lang:'React',
+    desc:'P(θ|D) ∝ Γ(α+H(D))·β(H_theory,H_proof)/ζ(H_conclusion+1) をReactで実装。TupleSpace・π-softmax・多様体可視化を統合したChatGPT再発明アーキテクチャ。',
+    srcs:[
+      { lbl:'Bada++/', url:`${GH_PAGES}/Bada/Bada%2B%2B/`, cls:'' },
+      { lbl:'GitHub', url:`${GH_REPO}/Bada/tree/main`, cls:'ps-p' },
+    ]},
+];
+
+/* ════════════════════════════════════════════
+   RENDER — Papers
+════════════════════════════════════════════ */
+function tagHtml(tags){
+  return tags.map(([t,c])=>`<span class="pt pt-${c}">${t}</span>`).join('');
+}
+function renderPapers(){
+  const g = document.getElementById('papers-grid');
+  g.innerHTML = PAPERS.map(p => {
+    const rawPdf = `${GH_RAW}/tuplenetwork/main/${p.folder}/${p.pdf}`;
+    const ghUrl  = `${GH_REPO}/tuplenetwork/tree/main/${p.folder}`;
+    const pagesPdf = `${GH_PAGES}/tuplenetwork/${p.folder}/${p.pdf}`;
+    return `
+    <div class="pc rev" style="--ac:${p.accent}" onclick="togglePdf('pv-${p.n}',event)">
+      <div class="pc-num">${p.n}</div>
+      <div class="pc-body">
+        <div class="pc-title">${p.title}</div>
+        <span class="pc-ja">${p.ja}</span>
+        <div class="pc-desc">${p.desc}</div>
+        <div class="pc-tags">${tagHtml(p.tags)}</div>
+        <div class="pc-links">
+          <a class="plink pl-g" href="${pagesPdf}" target="_blank" onclick="event.stopPropagation()">📄 PDF 開く</a>
+          <a class="plink pl-b" href="${rawPdf}" target="_blank" onclick="event.stopPropagation()">⬇ Raw</a>
+          <a class="plink pl-t" href="${ghUrl}" target="_blank" onclick="event.stopPropagation()">⌥ GitHub</a>
+          <span class="plink pl-g" style="cursor:pointer">▼ インライン表示</span>
+        </div>
+        <div class="pdf-viewer" id="pv-${p.n}">
+          <div class="pv-bar">
+            <span class="pv-fname">${p.pdf}</span>
+            <div class="pv-links">
+              <a class="pv-a pv-a-b" href="${pagesPdf}" target="_blank">新タブで開く</a>
+              <a class="pv-a pv-a-b" href="${rawPdf}" target="_blank">Raw DL</a>
+            </div>
+            <span class="pv-close" onclick="closePdf('pv-${p.n}',event)">✕ 閉じる</span>
+          </div>
+          <iframe class="pdf-frame" data-src="${pagesPdf}" title="${p.pdf}"></iframe>
+        </div>
+      </div>
+      <div class="pc-arr">→</div>
+    </div>`;
+  }).join('');
+}
+
+function togglePdf(id, e){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.pdf-viewer.open').forEach(v=>{
+    v.classList.remove('open');
+  });
+  if(!isOpen){
+    el.classList.add('open');
+    // lazy load iframe
+    const fr = el.querySelector('iframe');
+    if(fr && !fr.src) fr.src = fr.dataset.src;
+  }
+}
+function closePdf(id, e){
+  e.stopPropagation();
+  document.getElementById(id)?.classList.remove('open');
+}
+
+/* ════════════════════════════════════════════
+   RENDER — Repositories + Scanner
+════════════════════════════════════════════ */
+function renderRepos(){
+  const w = document.getElementById('repo-wrap');
+  w.innerHTML = REPOS.map(repo => `
+    <div class="rev">
+      <div class="rg-hdr">
+        <div class="rg-icon" style="background:${repo.iconBg}">${repo.icon}</div>
+        <div class="rg-meta">
+          <div class="rg-name">masaaki-avnturle<span>/</span>${repo.name}</div>
+          <div class="rg-url">https://github.com/masaaki-avnturle/${repo.name}</div>
+        </div>
+        <a class="gh-btn ${repo.btnCls}" href="${repo.ghUrl}" target="_blank">GitHub →</a>
+      </div>
+      <div class="f-grid">
+        ${repo.folders.map(f=>`
+          <a class="f-card ${f.cls}" href="${f.url}" target="_blank">
+            <span class="f-badge">${f.badge}</span>
+            <div class="f-path">${f.path}</div>
+            <div class="f-desc">${f.desc}</div>
+            <div class="f-url">${f.url}</div>
+            <span class="f-arr">→</span>
+          </a>`).join('')}
+      </div>
+      ${repo.folders.map((f,i)=>`
+        <div class="scanner-box" style="margin-top:${i===0?'28px':'12px'}">
+          <div class="scanner-hdr">
+            <span class="scanner-title">📂 ${repo.name}/${f.path}</span>
+            <span class="scan-status" id="ss-${repo.name}-${i}"></span>
+            <button class="scan-btn" onclick="scanFolder('${repo.name}','${f.apiPath}','${repo.name}-${i}')">🔍 スキャン</button>
+          </div>
+          <div class="file-list" id="fl-${repo.name}-${i}">
+            <div class="scan-empty">「スキャン」をクリックしてGitHub APIからファイルを取得します</div>
+          </div>
+        </div>`).join('')}
+    </div>
+  `).join('');
+}
+
+/* GitHub API file scanner */
+async function scanFolder(repo, apiPath, uid){
+  const statusEl = document.getElementById(`ss-${uid}`);
+  const listEl   = document.getElementById(`fl-${uid}`);
+  if(!statusEl || !listEl) return;
+  statusEl.textContent = '取得中...';
+  listEl.innerHTML = '<div class="scan-empty">⏳ GitHub API に問い合わせ中...</div>';
+
+  const path = apiPath ? `/${apiPath}` : '';
+  const apiUrl = `https://api.github.com/repos/masaaki-avnturle/${repo}/contents${path}`;
+
+  try {
+    const resp = await fetch(apiUrl, {
+      headers:{ 'Accept':'application/vnd.github.v3+json' }
+    });
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const files = await resp.json();
+
+    if(!Array.isArray(files) || files.length === 0){
+      listEl.innerHTML = '<div class="scan-empty">ファイルが見つかりませんでした（リポジトリが非公開の可能性があります）</div>';
+      statusEl.textContent = '0 files';
+      return;
+    }
+
+    statusEl.textContent = `${files.length} items`;
+    listEl.innerHTML = files.map(f => {
+      const ext = f.name.split('.').pop().toLowerCase();
+      const icons = {pdf:'📄',html:'🌐',c:'⚙️',h:'⚙️',md:'📝',js:'📜',txt:'📃',json:'📦',sh:'🔧'};
+      const ico = f.type==='dir' ? '📁' : (icons[ext] || '📄');
+      const typeCls = f.type==='dir' ? '' : `fi-type-${ext}`;
+      const size = f.size ? (f.size > 1024 ? `${(f.size/1024).toFixed(1)}KB` : `${f.size}B`) : '';
+      const viewUrl = f.type==='dir'
+        ? `https://github.com/masaaki-avnturle/${repo}/tree/main/${f.path}`
+        : (ext==='pdf'
+          ? `https://masaaki-avnturle.github.io/${repo}/${f.path}`
+          : f.html_url);
+      const rawUrl = f.download_url || '';
+
+      return `<div class="file-item ${typeCls}" onclick="window.open('${viewUrl}','_blank')">
+        <span class="fi-icon">${ico}</span>
+        <span class="fi-name">${f.name}${f.type==='dir'?'/':''}</span>
+        <span class="fi-size">${size}</span>
+        ${rawUrl ? `<a class="fi-open" href="${rawUrl}" target="_blank" onclick="event.stopPropagation()">Raw</a>` : ''}
+        <a class="fi-open" href="${viewUrl}" target="_blank" onclick="event.stopPropagation()">開く</a>
+      </div>`;
+    }).join('');
+  } catch(err){
+    listEl.innerHTML = `<div class="scan-empty">⚠️ 取得失敗: ${err.message}<br>リポジトリが公開されると自動的に機能します</div>`;
+    statusEl.textContent = 'エラー';
+  }
+}
+
+/* ════════════════════════════════════════════
+   RENDER — Projects
+════════════════════════════════════════════ */
+function renderProjects(){
+  const g = document.getElementById('proj-grid');
+  g.innerHTML = PROJECTS.map(p=>`
+    <div class="pj ${p.cls} rev">
+      <div class="pj-top">
+        <div class="pj-ico" style="background:${p.icoBg}">${p.ico}</div>
+        <span class="pj-lang">${p.lang}</span>
+      </div>
+      <div class="pj-title">${p.title}</div>
+      <div class="pj-sub">${p.sub}</div>
+      <div class="pj-desc">${p.desc}</div>
+      <div class="pj-srcs">
+        ${p.srcs.map(s=>`<a class="ps ${s.cls}" href="${s.url}" target="_blank">
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          ${s.lbl}</a>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+/* ════════════════════════════════════════════
+   CANVAS BACKGROUND — Jones knot particles
+════════════════════════════════════════════ */
+(function(){
+  const cv = document.getElementById('bg');
+  const cx = cv.getContext('2d');
+  let W,H,nodes=[],t=0;
+  function resize(){ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; }
+  resize();
+  window.addEventListener('resize',()=>{resize();init();});
+  function init(){
+    nodes=[];
+    const n=Math.floor(W*H/20000);
+    for(let i=0;i<n;i++) nodes.push({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.22, vy:(Math.random()-.5)*.22,
+      r:Math.random()*1.4+.4, p:Math.random()*Math.PI*2,
+      c:['#4a80d0','#c8a44a','#3ab8c0','#8850d0'][Math.floor(Math.random()*4)]
+    });
+  }
+  init();
+  // Jones knot curves
+  const K=[];
+  function initK(){
+    K.length=0;
+    for(let i=0;i<3;i++) K.push({
+      cx:W*(.15+Math.random()*.7), cy:H*(.15+Math.random()*.7),
+      a:80+Math.random()*60, b:60+Math.random()*40,
+      p:Math.random()*Math.PI*2, sp:.0003+Math.random()*.0003,
+      c:['rgba(74,128,208,.06)','rgba(200,164,74,.05)','rgba(58,184,192,.05)'][i]
+    });
+  }
+  initK();
+  function frame(){
+    cx.clearRect(0,0,W,H); t++;
+    // Knots
+    K.forEach(k=>{
+      k.p+=k.sp;
+      cx.beginPath();
+      for(let i=0;i<=360;i++){
+        const r=i*Math.PI/180;
+        const x=k.cx+k.a*Math.cos(r+k.p)*Math.cos(2*r);
+        const y=k.cy+k.b*Math.sin(r+k.p)*Math.cos(3*r);
+        i?cx.lineTo(x,y):cx.moveTo(x,y);
+      }
+      cx.strokeStyle=k.c; cx.lineWidth=1; cx.stroke();
+    });
+    // Nodes + connections
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+      cx.beginPath();
+      cx.arc(n.x,n.y,n.r*(1+.3*Math.sin(t*.01+n.p)),0,Math.PI*2);
+      cx.fillStyle=n.c; cx.fill();
+    });
+    nodes.forEach((a,i)=>{
+      for(let j=i+1;j<nodes.length;j++){
+        const b=nodes[j];
+        const d=Math.hypot(a.x-b.x,a.y-b.y);
+        if(d<120){
+          cx.beginPath(); cx.moveTo(a.x,a.y); cx.lineTo(b.x,b.y);
+          cx.strokeStyle=`rgba(74,128,208,${.08*(1-d/120)})`;
+          cx.lineWidth=.6; cx.stroke();
+        }
+      }
+    });
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ════════════════════════════════════════════
+   SCROLL / INTERSECTION / COUNTER
+════════════════════════════════════════════ */
+// Scroll progress bar
+window.addEventListener('scroll',()=>{
+  const max=document.body.scrollHeight-window.innerHeight;
+  document.getElementById('spb').style.width=(window.scrollY/max*100)+'%';
+},{passive:true});
+
+// Reveal on scroll
+const ro = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in');
+  });
+},{threshold:.1});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+
+// Counter animation
+function countUp(el,target,suffix){
+  const inf = target===Infinity;
+  const dur=1600; let s=0;
+  const step=ts=>{
+    if(!s) s=ts;
+    const p=Math.min((ts-s)/dur,1);
+    const e=1-Math.pow(1-p,3);
+    el.textContent = inf?(p===1?'∞':Math.floor(e*999)):Math.floor(e*target)+suffix;
+    if(p<1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const statObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.querySelectorAll('.sn').forEach(n=>{
+      const v=n.dataset.target;
+      if(v==='∞') countUp(n,Infinity,'');
+      else countUp(n,parseInt(v),v==='1'?'':'+');
+    });
+    statObs.unobserve(e.target);
+  });
+},{threshold:.5});
+const sb=document.querySelector('.stats');
+if(sb) statObs.observe(sb);
+
+// Nav active
+const nls=document.querySelectorAll('.na');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY+80;
+  document.querySelectorAll('section[id]').forEach(s=>{
+    if(y>=s.offsetTop && y<s.offsetTop+s.offsetHeight){
+      nls.forEach(l=>{
+        l.classList.toggle('active',l.getAttribute('href')==='#'+s.id);
+      });
+    }
+  });
+},{passive:true});
+
+// Magnetic tilt
+document.addEventListener('mousemove',e=>{
+  document.querySelectorAll('.pc,.pj,.f-card').forEach(card=>{
+    const r=card.getBoundingClientRect();
+    if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){
+      const dx=(e.clientX-r.left-r.width/2)/(r.width/2);
+      const dy=(e.clientY-r.top-r.height/2)/(r.height/2);
+      card.style.transform=`perspective(700px) rotateY(${dx*4}deg) rotateX(${-dy*3}deg) translateY(-2px)`;
+    } else {
+      card.style.transform='';
+    }
+  });
+});
+
+// Particle burst on paper click
+(function(){
+  const cv=document.createElement('canvas');
+  cv.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:8000;';
+  document.body.appendChild(cv);
+  const c2=cv.getContext('2d');
+  const resize=()=>{cv.width=window.innerWidth;cv.height=window.innerHeight;};
+  resize(); window.addEventListener('resize',resize);
+  let pts=[];
+  const cols=['#4a80d0','#c8a44a','#3ab8c0','#8850d0','#6aa0f0','#e8c060'];
+  function burst(x,y){
+    for(let i=0;i<20;i++){
+      const a=Math.PI*2/20*i+Math.random()*.3;
+      const spd=2+Math.random()*4;
+      pts.push({x,y,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd,r:2+Math.random()*3,
+        life:1,dec:.025+Math.random()*.02,col:cols[Math.floor(Math.random()*cols.length)]});
+    }
+    if(!running) anim();
+  }
+  let running=false;
+  function anim(){
+    running=true;
+    c2.clearRect(0,0,cv.width,cv.height);
+    pts=pts.filter(p=>p.life>0);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.07; p.life-=p.dec;
+      c2.globalAlpha=p.life; c2.fillStyle=p.col;
+      c2.beginPath(); c2.arc(p.x,p.y,p.r*p.life,0,Math.PI*2); c2.fill();
+    });
+    c2.globalAlpha=1;
+    if(pts.length) requestAnimationFrame(anim);
+    else running=false;
+  }
+  document.addEventListener('click',e=>{
+    if(e.target.closest('.pc')) burst(e.clientX,e.clientY);
+  });
+})();
+
+// Keyboard navigation
+document.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(e.target.tagName)) return;
+  const ids=['hero','about','papers','repos','projects','equations','timeline','contact'];
+  let cur=ids.findIndex(id=>{
+    const s=document.getElementById(id);
+    return s&&window.scrollY>=s.offsetTop-80&&window.scrollY<s.offsetTop+s.offsetHeight;
+  });
+  if(e.key==='j'&&cur<ids.length-1) document.getElementById(ids[cur+1])?.scrollIntoView({behavior:'smooth'});
+  if(e.key==='k'&&cur>0) document.getElementById(ids[cur-1])?.scrollIntoView({behavior:'smooth'});
+});
+
+/* ── INIT ── */
+renderPapers();
+renderRepos();
+renderProjects();
+</script>
+</body>
+</html>
