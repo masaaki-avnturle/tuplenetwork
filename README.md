@@ -159,6 +159,56 @@ log(x·log x) ≥ 2(y·log y)^½
 [📄 PDF](https://masaaki-avnturle.github.io/tuplenetwork/pdf/esterate.pdf) · [⌥ GitHub](https://github.com/masaaki-avnturle/tuplenetwork/blob/main/pdf/esterate.pdf)
 </details>
 
+<details>
+<summary><b>11 · badaquantumreviserpaper.pdf — Reviser-Extensible Grammars: Q#-Targeted Quantum Front End</b></summary>
+
+**Reviser 拡張文法 — Bada の Q# 指向量子フロントエンド**
+
+Unknown-Prior Engine (Bada) に `@reviser : grammar` による文法自己拡張を導入し、Q# 風量子サブ言語 (qubit / H / CNOT / Measure) をコンパイル・インタープリタ両系で実行する論文 (7p)。
+
+```
+@reviser : grammar → 拡張トランザクション (append-only ledger)
+qubit q; H(q); CNOT(q,r); Measure(q)
+```
+
+[📄 PDF](https://masaaki-avnturle.github.io/tuplenetwork/pdf/badaquantumreviserpaper.pdf) · [⌥ GitHub](https://github.com/masaaki-avnturle/tuplenetwork/blob/main/pdf/badaquantumreviserpaper.pdf)
+</details>
+
+<details>
+<summary><b>12 · badasource1.pdf — Bada: The Unknown-Prior Engine Language (full source)</b></summary>
+
+**Bada 言語 完全ソースリスティング**
+
+lexer · parser · インタープリタ · Bada→C コンパイラを含む Unknown-Prior Engine Language の全ソース掲載 (34p)。README / Makefile / src/bada.h から実行系まで。
+
+[📄 PDF](https://masaaki-avnturle.github.io/tuplenetwork/pdf/badasource1.pdf) · [⌥ GitHub](https://github.com/masaaki-avnturle/tuplenetwork/blob/main/pdf/badasource1.pdf)
+</details>
+
+<details>
+<summary><b>13 · Bada_Engine_Sources.pdf — Bada Engine: Unknown-Prior & Chaos Ensemble Forecast</b></summary>
+
+**Bada エンジン — 未知事前分布とカオス・アンサンブル予報 (Termux/ARM64 単一ファイル)**
+
+ψ_i = √a_i · e^{iθ_i} によるゼロ保存・位相のみ再重み付けと追記専用レジャー、Lorenz-63 RK4 アンサンブルと Lyapunov 予測限界を実装したエンジンソース集 (29p)。
+
+```
+psi_i = sqrt(a_i) · exp(i·theta_i)  ⇒  |psi_i|² = a_i
+zero-preservation · phase-only reweighting · append-only ledger
+```
+
+[📄 PDF](https://masaaki-avnturle.github.io/tuplenetwork/pdf/Bada_Engine_Sources.pdf) · [⌥ GitHub](https://github.com/masaaki-avnturle/tuplenetwork/blob/main/pdf/Bada_Engine_Sources.pdf)
+</details>
+
+<details>
+<summary><b>14 · quantum_computer4.pdf — Quantum Computer in a certain theorem</b></summary>
+
+**ある定理における量子計算機**
+
+多様体の総和 (summative of manifold) に組み上げられる可能性方程式のパターン創発から、量子計算機の定理を構成する論文 (7p)。
+
+[📄 PDF](https://masaaki-avnturle.github.io/tuplenetwork/pdf/quantum_computer4.pdf) · [⌥ GitHub](https://github.com/masaaki-avnturle/tuplenetwork/blob/main/pdf/quantum_computer4.pdf)
+</details>
+
 ---
 
 ### `altmistypdf/` フォルダ
