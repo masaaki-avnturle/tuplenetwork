@@ -21,6 +21,8 @@
 | 9/8 | ガウスからサーストン・ペレルマンへ — Ricci フロー・8 幾何・準同型の正確な所在 | [thurston_perelman_ricci_flow.pdf](thurston_perelman_ricci_flow.pdf) |
 | 9/8 | ゼータ関数の圏 — 極が古典、原点が量子、積は畳み込みになる | [zeta_category_gr_qm.pdf](zeta_category_gr_qm.pdf) |
 | 9/9 | 反重力発生器(第九巻)— ゼータ正則化応力テンソルを分析器として | [antigravity_zeta_analyzer.pdf](antigravity_zeta_analyzer.pdf) |
+| 9/10 | 反重力場の補空間エネルギーによる UFO オペレーティングシステムと生成AI操縦士の設計と実装 — BadaUFO-OS(応用篇) | [badaufo_os_paper.pdf](badaufo_os_paper.pdf) |
+| 9/10 | BadaUFO-OS 論文 再現ジェネレータ(reportlab, Python 3) | [badaufo_os_paper_make.py](badaufo_os_paper_make.py) |
 | 9/12 | ゼロモードの数としての充足可能性と P ≠ NP 予想(第十二巻) | [pnp_zeromodes.pdf](pnp_zeromodes.pdf) |
 | 9/12 | 調和形式のゼロモードとホッジ予想(第十三巻) | [hodge_zeromodes.pdf](hodge_zeromodes.pdf) |
 | 9/12 | ゼータの s → ∞ 端としての質量ギャップとヤン・ミルズ問題(第十四巻) | [ym_massgap.pdf](ym_massgap.pdf) |
