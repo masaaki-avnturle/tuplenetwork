@@ -28,6 +28,7 @@
 | 9/12 | 零を保存するもの — 十四の短篇(随筆) | [zero_wo_hozon_suru_mono.pdf](zero_wo_hozon_suru_mono.pdf) |
 | 9/14 | 臨界線の中心零点としての BSD 予想と、七つのミレニアム問題の総括(第十五巻) | [vol15_millennium_synthesis.md](vol15_millennium_synthesis.md) |
 | 9/14 | 第十五巻 再現コード(BSD 数値検証、Python 3 + mpmath) | [vol15_bsd_verification.py](vol15_bsd_verification.py) |
+| 9/20 | **English Edition** — *What Preserves Zero: Collected Papers, Volumes I–XV* (第一〜十五巻の英語版合冊、全26頁) | [what_preserves_zero_collected_papers_en.pdf](what_preserves_zero_collected_papers_en.pdf) |
 
 ## ミレニアム問題との対応
 
