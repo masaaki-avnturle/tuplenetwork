@@ -30,6 +30,8 @@
 | 9/12 | 零を保存するもの — 十四の短篇(随筆) | [zero_wo_hozon_suru_mono.pdf](zero_wo_hozon_suru_mono.pdf) |
 | 9/14 | 臨界線の中心零点としての BSD 予想と、七つのミレニアム問題の総括(第十五巻) | [vol15_millennium_synthesis.md](vol15_millennium_synthesis.md) |
 | 9/14 | 第十五巻 再現コード(BSD 数値検証、Python 3 + mpmath) | [vol15_bsd_verification.py](vol15_bsd_verification.py) |
+| 9/21 | 超伝導磁石と空気抵抗を反重力の補空間で置き換えるリニア新幹線 OS — BadaLinear-OS(応用篇) | [badalinear_os_paper.pdf](badalinear_os_paper.pdf) · [English](badalinear_os_paper_EN.pdf) |
+| 9/21 | BadaLinear-OS 論文 再現ジェネレータ(日英両版、reportlab) | [badalinear_os_paper_make.py](badalinear_os_paper_make.py) |
 
 ## ミレニアム問題との対応
 
